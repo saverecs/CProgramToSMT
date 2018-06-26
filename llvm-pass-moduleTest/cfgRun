@@ -1,0 +1,6 @@
+
+rm heaterphi.pdf
+
+#dot -Tpdf /tmp/cfgcontroller-0efd38.dot -o test3.pdf
+dot -Tpdf /tmp/cfgZ_AF_Controller_step-ab91dd.dot -o afc.pdf
+

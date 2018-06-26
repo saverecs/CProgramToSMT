@@ -1,0 +1,13 @@
+#be inside this project folder llvm-pass-controllerProgram and execute this script
+
+#  /powerTrain/afc.c
+#  mythermo1.c
+
+clang -O1 -g    -Xclang -emit-llvm -c benchmarks/mythermo1.c -o benchmarks/test.bc
+
+opt   -O1 -instnamer -mem2reg  -simplifycfg  -loops  -lcssa -loop-simplify -loop-rotate -loop-unroll -unroll-count=3 -unroll-allow-partial       -load src/libTestPass.so -testPass benchmarks/test.bc -view-cfg  -o benchmarks/test
+
+
+##lli benchmarks/test
+
+
