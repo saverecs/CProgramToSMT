@@ -3,9 +3,11 @@
 #  /powerTrain/afc.c
 #  mythermo1.c
 
-clang -O1 -g    -Xclang -emit-llvm -c benchmarks/mythermo1.c -o benchmarks/test.bc
+clang -O1 -g    -Xclang -emit-llvm -c benchmarks/powerTrain/afc.c -o benchmarks/test.bc
 
-opt   -O1 -instnamer -mem2reg  -simplifycfg  -loops  -lcssa -loop-simplify -loop-rotate -loop-unroll -unroll-count=3 -unroll-allow-partial       -load src/libTestPass.so -testPass benchmarks/test.bc -view-cfg  -o benchmarks/test
+# -sroa  -sccp -ipsccp -ipconstprop -dce
+#-called-value-propagation    -constprop -correlated-propagation   -internalize  
+opt   -O1 -instnamer -mem2reg     -simplifycfg  -loops  -lcssa -loop-simplify -loop-rotate -loop-unroll -unroll-count=5 -unroll-allow-partial       -load src/libTestPass.so -testPass benchmarks/test.bc -view-cfg  -o benchmarks/test
 
 
 ##lli benchmarks/test

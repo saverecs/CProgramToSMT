@@ -1,89 +1,190 @@
-; ModuleID = 'benchmarks/mythermo1.c'
-source_filename = "benchmarks/mythermo1.c"
+; ModuleID = 'benchmarks/powerTrain/afc.c'
+source_filename = "benchmarks/powerTrain/afc.c"
 target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
 target triple = "x86_64-unknown-linux-gnu"
 
-%struct.INPUT_VAL = type { double, i32, i32, i32, i32, i32 }
-%struct.RETURN_VAL = type { double }
+%struct.INPUT_VAL = type { double, double, double, double, double, double, double, double, double, double, double }
+%struct.RETURN_VAL = type { double, double, double }
 
 ; Function Attrs: nounwind uwtable
-define dso_local void @controller(%struct.INPUT_VAL* nocapture %input, %struct.RETURN_VAL* nocapture %ret_val) local_unnamed_addr #0 !dbg !7 {
+define dso_local noalias i8* @controller(%struct.INPUT_VAL* nocapture %input, %struct.RETURN_VAL* nocapture %ret_val) local_unnamed_addr #0 !dbg !9 {
 entry:
-  call void @llvm.dbg.value(metadata %struct.INPUT_VAL* %input, metadata !29, metadata !DIExpression()), !dbg !41
-  call void @llvm.dbg.value(metadata %struct.RETURN_VAL* %ret_val, metadata !30, metadata !DIExpression()), !dbg !42
-  call void @llvm.dbg.value(metadata i32 2, metadata !36, metadata !DIExpression()), !dbg !43
-  call void @llvm.dbg.value(metadata double 7.000000e+01, metadata !39, metadata !DIExpression()), !dbg !44
-  call void @llvm.dbg.value(metadata double 6.600000e+01, metadata !40, metadata !DIExpression()), !dbg !45
-  %temperature = getelementptr inbounds %struct.INPUT_VAL, %struct.INPUT_VAL* %input, i64 0, i32 0, !dbg !46
-  %0 = load double, double* %temperature, align 8, !dbg !46, !tbaa !47
-  call void @llvm.dbg.value(metadata double %0, metadata !38, metadata !DIExpression()), !dbg !53
-  %chat_detect = getelementptr inbounds %struct.INPUT_VAL, %struct.INPUT_VAL* %input, i64 0, i32 1, !dbg !54
-  %1 = load i32, i32* %chat_detect, align 8, !dbg !54, !tbaa !55
-  call void @llvm.dbg.value(metadata i32 %1, metadata !31, metadata !DIExpression()), !dbg !56
-  %previous_cmd_to_heater = getelementptr inbounds %struct.INPUT_VAL, %struct.INPUT_VAL* %input, i64 0, i32 2, !dbg !57
-  %2 = load i32, i32* %previous_cmd_to_heater, align 4, !dbg !57, !tbaa !58
-  call void @llvm.dbg.value(metadata i32 %2, metadata !32, metadata !DIExpression()), !dbg !59
-  %on_count = getelementptr inbounds %struct.INPUT_VAL, %struct.INPUT_VAL* %input, i64 0, i32 3, !dbg !60
-  %3 = load i32, i32* %on_count, align 8, !dbg !60, !tbaa !61
-  call void @llvm.dbg.value(metadata i32 %3, metadata !33, metadata !DIExpression()), !dbg !62
-  %off_count = getelementptr inbounds %struct.INPUT_VAL, %struct.INPUT_VAL* %input, i64 0, i32 4, !dbg !63
-  %4 = load i32, i32* %off_count, align 4, !dbg !63, !tbaa !64
-  call void @llvm.dbg.value(metadata i32 %4, metadata !34, metadata !DIExpression()), !dbg !65
-  %cmd_to_heater = getelementptr inbounds %struct.INPUT_VAL, %struct.INPUT_VAL* %input, i64 0, i32 5, !dbg !66
-  call void @llvm.dbg.value(metadata i32* %cmd_to_heater, metadata !35, metadata !DIExpression(DW_OP_deref)), !dbg !67
-  %cmp = fcmp oge double %0, 6.600000e+01, !dbg !68
-  %cmp1 = fcmp olt double %0, 7.000000e+01, !dbg !70
-  %or.cond81 = and i1 %cmp, %cmp1, !dbg !71
-  br i1 %or.cond81, label %if.end9, label %if.else, !dbg !71
+  call void @llvm.dbg.value(metadata %struct.INPUT_VAL* %input, metadata !37, metadata !DIExpression()), !dbg !148
+  call void @llvm.dbg.value(metadata %struct.RETURN_VAL* %ret_val, metadata !38, metadata !DIExpression()), !dbg !149
+  %p_engine_speed = getelementptr inbounds %struct.INPUT_VAL, %struct.INPUT_VAL* %input, i64 0, i32 7, !dbg !150
+  %0 = load double, double* %p_engine_speed, align 8, !dbg !150, !tbaa !151
+  call void @llvm.dbg.value(metadata double %0, metadata !80, metadata !DIExpression()), !dbg !156
+  %p_throttle_angle = getelementptr inbounds %struct.INPUT_VAL, %struct.INPUT_VAL* %input, i64 0, i32 8, !dbg !157
+  %1 = load double, double* %p_throttle_angle, align 8, !dbg !157, !tbaa !158
+  call void @llvm.dbg.value(metadata double %1, metadata !81, metadata !DIExpression()), !dbg !159
+  %p_throttle_flow = getelementptr inbounds %struct.INPUT_VAL, %struct.INPUT_VAL* %input, i64 0, i32 9, !dbg !160
+  %2 = load double, double* %p_throttle_flow, align 8, !dbg !160, !tbaa !161
+  call void @llvm.dbg.value(metadata double %2, metadata !82, metadata !DIExpression()), !dbg !162
+  %p_airbyfuel_meas = getelementptr inbounds %struct.INPUT_VAL, %struct.INPUT_VAL* %input, i64 0, i32 10, !dbg !163
+  %3 = load double, double* %p_airbyfuel_meas, align 8, !dbg !163, !tbaa !164
+  call void @llvm.dbg.value(metadata double %3, metadata !83, metadata !DIExpression()), !dbg !165
+  call void @llvm.dbg.value(metadata double 1.000000e+00, metadata !109, metadata !DIExpression(DW_OP_LLVM_fragment, 0, 64)), !dbg !166
+  call void @llvm.dbg.value(metadata double 1.000000e+02, metadata !109, metadata !DIExpression(DW_OP_LLVM_fragment, 64, 64)), !dbg !166
+  call void @llvm.dbg.value(metadata double 0.000000e+00, metadata !109, metadata !DIExpression(DW_OP_LLVM_fragment, 128, 64)), !dbg !166
+  call void @llvm.dbg.value(metadata double 1.000000e+00, metadata !109, metadata !DIExpression(DW_OP_LLVM_fragment, 192, 64)), !dbg !166
+  call void @llvm.dbg.value(metadata double 1.000000e-02, metadata !109, metadata !DIExpression(DW_OP_LLVM_fragment, 256, 64)), !dbg !166
+  call void @llvm.dbg.value(metadata double -3.660000e-01, metadata !109, metadata !DIExpression(DW_OP_LLVM_fragment, 320, 64)), !dbg !166
+  call void @llvm.dbg.value(metadata double 0x3FB6FC7A398201CD, metadata !109, metadata !DIExpression(DW_OP_LLVM_fragment, 384, 64)), !dbg !166
+  call void @llvm.dbg.value(metadata double -3.370000e-02, metadata !109, metadata !DIExpression(DW_OP_LLVM_fragment, 448, 64)), !dbg !166
+  call void @llvm.dbg.value(metadata double 1.000000e-04, metadata !109, metadata !DIExpression(DW_OP_LLVM_fragment, 512, 64)), !dbg !166
+  call void @llvm.dbg.value(metadata double 4.132800e-01, metadata !109, metadata !DIExpression(DW_OP_LLVM_fragment, 640, 64)), !dbg !166
+  call void @llvm.dbg.value(metadata double 1.000000e-02, metadata !109, metadata !DIExpression(DW_OP_LLVM_fragment, 704, 64)), !dbg !166
+  call void @llvm.dbg.value(metadata double 4.000000e-02, metadata !109, metadata !DIExpression(DW_OP_LLVM_fragment, 768, 64)), !dbg !166
+  call void @llvm.dbg.value(metadata double 1.400000e-01, metadata !109, metadata !DIExpression(DW_OP_LLVM_fragment, 832, 64)), !dbg !166
+  call void @llvm.dbg.value(metadata double 1.660000e+00, metadata !109, metadata !DIExpression(DW_OP_LLVM_fragment, 960, 64)), !dbg !166
+  call void @llvm.dbg.value(metadata double 1.300000e-01, metadata !109, metadata !DIExpression(DW_OP_LLVM_fragment, 1024, 64)), !dbg !166
+  call void @llvm.dbg.value(metadata double 1.470000e+01, metadata !109, metadata !DIExpression(DW_OP_LLVM_fragment, 1088, 64)), !dbg !166
+  call void @llvm.dbg.value(metadata double 1.250000e+01, metadata !109, metadata !DIExpression(DW_OP_LLVM_fragment, 1152, 64)), !dbg !166
+  call void @llvm.dbg.value(metadata double 1.000000e-02, metadata !109, metadata !DIExpression(DW_OP_LLVM_fragment, 1280, 64)), !dbg !166
+  call void @llvm.dbg.value(metadata double 1.000000e+01, metadata !109, metadata !DIExpression(DW_OP_LLVM_fragment, 1344, 64)), !dbg !166
+  call void @llvm.dbg.value(metadata double 2.000000e+01, metadata !109, metadata !DIExpression(DW_OP_LLVM_fragment, 1408, 64)), !dbg !166
+  call void @llvm.dbg.value(metadata double 5.000000e+01, metadata !109, metadata !DIExpression(DW_OP_LLVM_fragment, 1472, 64)), !dbg !166
+  call void @llvm.dbg.value(metadata double -1.000000e+00, metadata !109, metadata !DIExpression(DW_OP_LLVM_fragment, 1536, 64)), !dbg !166
+  %p_normal_mode_detect_1 = getelementptr inbounds %struct.INPUT_VAL, %struct.INPUT_VAL* %input, i64 0, i32 0, !dbg !167
+  %4 = load double, double* %p_normal_mode_detect_1, align 8, !dbg !167, !tbaa !168
+  call void @llvm.dbg.value(metadata double %4, metadata !45, metadata !DIExpression(DW_OP_LLVM_fragment, 320, 64)), !dbg !169
+  %p_pi = getelementptr inbounds %struct.INPUT_VAL, %struct.INPUT_VAL* %input, i64 0, i32 1, !dbg !170
+  %5 = load double, double* %p_pi, align 8, !dbg !170, !tbaa !171
+  call void @llvm.dbg.value(metadata double %5, metadata !45, metadata !DIExpression(DW_OP_LLVM_fragment, 384, 64)), !dbg !169
+  %p_air_estimate = getelementptr inbounds %struct.INPUT_VAL, %struct.INPUT_VAL* %input, i64 0, i32 2, !dbg !172
+  %6 = load double, double* %p_air_estimate, align 8, !dbg !172, !tbaa !173
+  call void @llvm.dbg.value(metadata double %6, metadata !45, metadata !DIExpression(DW_OP_LLVM_fragment, 448, 64)), !dbg !169
+  %p_sensor_fail_detect = getelementptr inbounds %struct.INPUT_VAL, %struct.INPUT_VAL* %input, i64 0, i32 3, !dbg !174
+  %7 = load double, double* %p_sensor_fail_detect, align 8, !dbg !174, !tbaa !175
+  %conv = fptoui double %7 to i8, !dbg !176
+  call void @llvm.dbg.value(metadata i8 %conv, metadata !45, metadata !DIExpression(DW_OP_LLVM_fragment, 512, 8)), !dbg !169
+  %p_power_mode_detect = getelementptr inbounds %struct.INPUT_VAL, %struct.INPUT_VAL* %input, i64 0, i32 4, !dbg !177
+  %8 = load double, double* %p_power_mode_detect, align 8, !dbg !177, !tbaa !178
+  %conv1 = fptoui double %8 to i8, !dbg !179
+  call void @llvm.dbg.value(metadata i8 %conv1, metadata !45, metadata !DIExpression(DW_OP_LLVM_fragment, 520, 8)), !dbg !169
+  %p_normal_mode_detect_1_e = getelementptr inbounds %struct.INPUT_VAL, %struct.INPUT_VAL* %input, i64 0, i32 5, !dbg !180
+  %9 = load double, double* %p_normal_mode_detect_1_e, align 8, !dbg !180, !tbaa !181
+  %conv2 = fptoui double %9 to i8, !dbg !182
+  call void @llvm.dbg.value(metadata i8 %conv2, metadata !45, metadata !DIExpression(DW_OP_LLVM_fragment, 528, 8)), !dbg !169
+  %p_Sum3 = getelementptr inbounds %struct.INPUT_VAL, %struct.INPUT_VAL* %input, i64 0, i32 6, !dbg !183
+  %10 = load double, double* %p_Sum3, align 8, !dbg !183, !tbaa !184
+  call void @llvm.dbg.value(metadata double %10, metadata !39, metadata !DIExpression()), !dbg !185
+  call void @llvm.dbg.value(metadata double %0, metadata !100, metadata !DIExpression()), !dbg !186
+  call void @llvm.dbg.value(metadata double %1, metadata !101, metadata !DIExpression()), !dbg !187
+  call void @llvm.dbg.value(metadata double %2, metadata !102, metadata !DIExpression()), !dbg !188
+  call void @llvm.dbg.value(metadata double %3, metadata !103, metadata !DIExpression()), !dbg !189
+  %cmp = fcmp ole double %3, -1.000000e+00, !dbg !190
+  %tobool = icmp ne i8 %conv, 0, !dbg !191
+  %11 = or i1 %cmp, %tobool, !dbg !191
+  %add = fadd double %4, 1.000000e-02, !dbg !192
+  call void @llvm.dbg.value(metadata double %add, metadata !96, metadata !DIExpression()), !dbg !193
+  %cmp9 = fcmp oge double %add, 1.000000e+01, !dbg !194
+  %tobool14 = icmp ne i8 %conv2, 0, !dbg !195
+  %12 = or i1 %cmp9, %tobool14, !dbg !195
+  call void @llvm.dbg.value(metadata double %add, metadata !45, metadata !DIExpression(DW_OP_LLVM_fragment, 320, 64)), !dbg !169
+  %tobool21 = icmp eq i8 %conv1, 0, !dbg !196
+  %. = select i1 %tobool21, double 7.000000e+01, double 5.000000e+01
+  call void @llvm.dbg.value(metadata double %., metadata !98, metadata !DIExpression()), !dbg !198
+  %cmp24 = fcmp oge double %1, %., !dbg !199
+  %tobool29.demorgan = or i1 %cmp, %tobool, !dbg !200
+  %.not251.demorgan = or i1 %cmp9, %tobool14, !dbg !201
+  %.not251 = xor i1 %.not251.demorgan, true, !dbg !201
+  %not.or.cond = or i1 %tobool29.demorgan, %.not251, !dbg !201
+  %narrow = or i1 %cmp24, %not.or.cond, !dbg !201
+  %brmerge.demorgan = and i1 %12, %cmp24, !dbg !202
+  call void @llvm.dbg.value(metadata double 1.470000e+01, metadata !96, metadata !DIExpression()), !dbg !193
+  %rtb_Sum_d.0 = select i1 %brmerge.demorgan, double 1.250000e+01, double 1.470000e+01, !dbg !202
+  call void @llvm.dbg.value(metadata double %rtb_Sum_d.0, metadata !96, metadata !DIExpression()), !dbg !193
+  %mul = fmul double %0, %6, !dbg !204
+  %mul45 = fmul double %mul, 0x3FB6FC7A398201CD, !dbg !205
+  %add46 = fadd double %mul45, -3.660000e-01, !dbg !206
+  %mul49 = fmul double %6, %6, !dbg !207
+  %mul50 = fmul double %0, %mul49, !dbg !208
+  %mul51 = fmul double %mul50, 3.370000e-02, !dbg !209
+  %add52252 = fsub double %add46, %mul51, !dbg !209
+  %mul53 = fmul double %0, %0, !dbg !210
+  %mul55 = fmul double %mul53, %6, !dbg !211
+  %mul56 = fmul double %mul55, 1.000000e-04, !dbg !212
+  %add57 = fadd double %mul56, %add52252, !dbg !213
+  call void @llvm.dbg.value(metadata double %add57, metadata !97, metadata !DIExpression()), !dbg !214
+  %sub = fsub double %2, %add57, !dbg !215
+  %mul58 = fmul double %sub, 4.132800e-01, !dbg !216
+  %mul59 = fmul double %mul58, 1.000000e-02, !dbg !217
+  %add61 = fadd double %6, %mul59, !dbg !218
+  call void @llvm.dbg.value(metadata double %add61, metadata !45, metadata !DIExpression(DW_OP_LLVM_fragment, 448, 64)), !dbg !169
+  br i1 %narrow, label %if.end91, label %if.else76, !dbg !219
 
-if.else:                                          ; preds = %entry
-  %cmp2 = fcmp ult double %0, 7.000000e+01, !dbg !72
-  br i1 %cmp2, label %if.else4, label %if.end9, !dbg !74
+if.else76:                                        ; preds = %entry
+  %sub64 = fsub double %3, %rtb_Sum_d.0, !dbg !220
+  call void @llvm.dbg.value(metadata double %sub64, metadata !98, metadata !DIExpression()), !dbg !198
+  %mul65 = fmul double %sub64, 1.400000e-01, !dbg !223
+  %mul66 = fmul double %mul65, 1.000000e-02, !dbg !224
+  %add68 = fadd double %5, %mul66, !dbg !225
+  call void @llvm.dbg.value(metadata double %add68, metadata !99, metadata !DIExpression()), !dbg !226
+  %mul69 = fmul double %sub64, 4.000000e-02, !dbg !227
+  %add70 = fadd double %mul69, %add68, !dbg !228
+  call void @llvm.dbg.value(metadata double %add70, metadata !39, metadata !DIExpression()), !dbg !185
+  call void @llvm.dbg.value(metadata double %add68, metadata !45, metadata !DIExpression(DW_OP_LLVM_fragment, 384, 64)), !dbg !169
+  call void @llvm.dbg.value(metadata double %add70, metadata !39, metadata !DIExpression()), !dbg !185
+  call void @llvm.dbg.value(metadata double %add68, metadata !45, metadata !DIExpression(DW_OP_LLVM_fragment, 384, 64)), !dbg !169
+  %add78 = fadd double %add70, 1.000000e+00, !dbg !229
+  call void @llvm.dbg.value(metadata double %add78, metadata !98, metadata !DIExpression()), !dbg !198
+  %cmp79 = fcmp ogt double %add78, 1.000000e+02, !dbg !232
+  br i1 %cmp79, label %if.end91, label %if.else83, !dbg !234
 
-if.else4:                                         ; preds = %if.else
-  %cmp5 = fcmp olt double %0, 6.600000e+01, !dbg !75
-  %. = select i1 %cmp5, i32 1, i32 %2, !dbg !77
-  br label %if.end9, !dbg !77
+if.else83:                                        ; preds = %if.else76
+  %cmp84 = fcmp olt double %add78, 0.000000e+00, !dbg !235
+  %.add78 = select i1 %cmp84, double 0.000000e+00, double %add78, !dbg !237
+  br label %if.end91, !dbg !237
 
-if.end9:                                          ; preds = %if.else4, %if.else, %entry
-  %command_to_heater.0 = phi i32 [ 2, %entry ], [ 0, %if.else ], [ %., %if.else4 ], !dbg !78
-  call void @llvm.dbg.value(metadata i32 %command_to_heater.0, metadata !35, metadata !DIExpression()), !dbg !67
-  %cmp10 = icmp sgt i32 %4, 4, !dbg !79
-  %cmp11 = icmp sgt i32 %3, 4, !dbg !81
-  %or.cond = or i1 %cmp11, %cmp10, !dbg !82
-  %spec.select = select i1 %or.cond, i32 0, i32 %1, !dbg !82
-  call void @llvm.dbg.value(metadata i32 %spec.select, metadata !31, metadata !DIExpression()), !dbg !56
-  %cmp14 = icmp ne i32 %command_to_heater.0, %2, !dbg !83
-  call void @llvm.dbg.value(metadata i32 %spec.select, metadata !31, metadata !DIExpression(DW_OP_plus_uconst, 1, DW_OP_stack_value)), !dbg !56
-  %inc = zext i1 %cmp14 to i32, !dbg !85
-  %chatter_detect.1 = add nsw i32 %spec.select, %inc, !dbg !85
-  call void @llvm.dbg.value(metadata i32 %chatter_detect.1, metadata !31, metadata !DIExpression()), !dbg !56
-  %cmp17 = icmp sgt i32 %chatter_detect.1, 2, !dbg !86
-  %spec.select82 = select i1 %cmp17, i32 %2, i32 %command_to_heater.0, !dbg !88
-  call void @llvm.dbg.value(metadata i32 %spec.select82, metadata !35, metadata !DIExpression()), !dbg !67
-  %cmp20 = icmp eq i32 %spec.select82, 0, !dbg !89
-  call void @llvm.dbg.value(metadata i32 0, metadata !33, metadata !DIExpression()), !dbg !62
-  %inc22 = add nsw i32 %4, 1, !dbg !91
-  call void @llvm.dbg.value(metadata i32 %inc22, metadata !34, metadata !DIExpression()), !dbg !65
-  %inc24 = add nsw i32 %3, 1, !dbg !93
-  call void @llvm.dbg.value(metadata i32 %inc24, metadata !33, metadata !DIExpression()), !dbg !62
-  call void @llvm.dbg.value(metadata i32 0, metadata !34, metadata !DIExpression()), !dbg !65
-  %off_counter.0 = select i1 %cmp20, i32 %inc22, i32 0, !dbg !95
-  %on_counter.0 = select i1 %cmp20, i32 0, i32 %inc24, !dbg !95
-  call void @llvm.dbg.value(metadata i32 %on_counter.0, metadata !33, metadata !DIExpression()), !dbg !62
-  call void @llvm.dbg.value(metadata i32 %off_counter.0, metadata !34, metadata !DIExpression()), !dbg !65
-  %cond = icmp eq i32 %spec.select82, 2, !dbg !96
-  %spec.select83 = select i1 %cond, double 7.000000e+01, double 1.000000e+02, !dbg !96
-  %uVal.0 = select i1 %cmp20, double 2.000000e+01, double %spec.select83, !dbg !98
-  call void @llvm.dbg.value(metadata double %uVal.0, metadata !37, metadata !DIExpression()), !dbg !99
-  %u = getelementptr inbounds %struct.RETURN_VAL, %struct.RETURN_VAL* %ret_val, i64 0, i32 0, !dbg !100
-  store double %uVal.0, double* %u, align 8, !dbg !101, !tbaa !102
-  store i32 %spec.select82, i32* %cmd_to_heater, align 8, !dbg !104, !tbaa !105
-  store i32 %chatter_detect.1, i32* %chat_detect, align 8, !dbg !106, !tbaa !55
-  store i32 %spec.select82, i32* %previous_cmd_to_heater, align 4, !dbg !107, !tbaa !58
-  store i32 %on_counter.0, i32* %on_count, align 8, !dbg !108, !tbaa !61
-  store i32 %off_counter.0, i32* %off_count, align 4, !dbg !109, !tbaa !64
-  ret void, !dbg !110
+if.end91:                                         ; preds = %entry, %if.else83, %if.else76
+  %Z_AF_Controller_B.sroa.0.0250 = phi double [ %add70, %if.else76 ], [ %add70, %if.else83 ], [ %10, %entry ]
+  %Z_AF_Controller_DW.sroa.6.0249 = phi double [ %add68, %if.else76 ], [ %add68, %if.else83 ], [ %5, %entry ]
+  %rtb_Switch_n0.0 = phi double [ 1.000000e+02, %if.else76 ], [ %.add78, %if.else83 ], [ 1.000000e+00, %entry ], !dbg !239
+  call void @llvm.dbg.value(metadata double %rtb_Switch_n0.0, metadata !90, metadata !DIExpression()), !dbg !241
+  %div = fdiv double %add57, %rtb_Sum_d.0, !dbg !242
+  %mul92 = fmul double %div, %rtb_Switch_n0.0, !dbg !243
+  call void @llvm.dbg.value(metadata double %mul92, metadata !98, metadata !DIExpression()), !dbg !198
+  %cmp93 = fcmp ogt double %mul92, 1.660000e+00, !dbg !244
+  %cmp98 = fcmp olt double %mul92, 1.300000e-01, !dbg !246
+  %.mul92 = select i1 %cmp98, double 1.300000e-01, double %mul92, !dbg !248
+  %rtb_DataStoreRead.0 = select i1 %cmp93, double 1.660000e+00, double %.mul92, !dbg !250
+  call void @llvm.dbg.value(metadata double %rtb_DataStoreRead.0, metadata !85, metadata !DIExpression()), !dbg !251
+  call void @llvm.dbg.value(metadata double %3, metadata !86, metadata !DIExpression()), !dbg !252
+  call void @llvm.dbg.value(metadata double %2, metadata !87, metadata !DIExpression()), !dbg !253
+  call void @llvm.dbg.value(metadata double %1, metadata !88, metadata !DIExpression()), !dbg !254
+  call void @llvm.dbg.value(metadata double %0, metadata !89, metadata !DIExpression()), !dbg !255
+  call void @llvm.dbg.value(metadata double %rtb_Sum_d.0, metadata !84, metadata !DIExpression()), !dbg !256
+  call void @llvm.dbg.value(metadata double %rtb_DataStoreRead.0, metadata !77, metadata !DIExpression()), !dbg !257
+  call void @llvm.dbg.value(metadata double %rtb_Sum_d.0, metadata !79, metadata !DIExpression()), !dbg !258
+  store double %add, double* %p_normal_mode_detect_1, align 8, !dbg !259, !tbaa !168
+  store double %Z_AF_Controller_DW.sroa.6.0249, double* %p_pi, align 8, !dbg !260, !tbaa !171
+  store double %add61, double* %p_air_estimate, align 8, !dbg !261, !tbaa !173
+  %conv112 = uitofp i1 %11 to double, !dbg !262
+  call void @llvm.dbg.value(metadata double %conv112, metadata !94, metadata !DIExpression()), !dbg !263
+  call void @llvm.dbg.value(metadata double %conv112, metadata !45, metadata !DIExpression(DW_OP_LLVM_fragment, 512, 8)), !dbg !169
+  store double %conv112, double* %p_sensor_fail_detect, align 8, !dbg !264, !tbaa !175
+  %conv115 = uitofp i1 %cmp24 to double, !dbg !265
+  call void @llvm.dbg.value(metadata double %conv115, metadata !95, metadata !DIExpression()), !dbg !266
+  call void @llvm.dbg.value(metadata double %conv115, metadata !45, metadata !DIExpression(DW_OP_LLVM_fragment, 520, 8)), !dbg !169
+  store double %conv115, double* %p_power_mode_detect, align 8, !dbg !267, !tbaa !178
+  %conv118 = uitofp i1 %12 to double, !dbg !268
+  call void @llvm.dbg.value(metadata double %conv118, metadata !92, metadata !DIExpression()), !dbg !269
+  call void @llvm.dbg.value(metadata double %conv118, metadata !45, metadata !DIExpression(DW_OP_LLVM_fragment, 528, 8)), !dbg !169
+  store double %conv118, double* %p_normal_mode_detect_1_e, align 8, !dbg !270, !tbaa !181
+  store double %Z_AF_Controller_B.sroa.0.0250, double* %p_Sum3, align 8, !dbg !271, !tbaa !184
+  %c_commanded_fuel_gps = getelementptr inbounds %struct.RETURN_VAL, %struct.RETURN_VAL* %ret_val, i64 0, i32 0, !dbg !272
+  store double %rtb_DataStoreRead.0, double* %c_commanded_fuel_gps, align 8, !dbg !273, !tbaa !274
+  %conv122 = uitofp i1 %narrow to double, !dbg !276
+  call void @llvm.dbg.value(metadata double %conv122, metadata !94, metadata !DIExpression()), !dbg !263
+  call void @llvm.dbg.value(metadata double %conv122, metadata !93, metadata !DIExpression()), !dbg !277
+  call void @llvm.dbg.value(metadata double %conv122, metadata !91, metadata !DIExpression()), !dbg !278
+  call void @llvm.dbg.value(metadata double %conv122, metadata !78, metadata !DIExpression()), !dbg !279
+  %c_controller_mode = getelementptr inbounds %struct.RETURN_VAL, %struct.RETURN_VAL* %ret_val, i64 0, i32 1, !dbg !280
+  store double %conv122, double* %c_controller_mode, align 8, !dbg !281, !tbaa !282
+  %c_airbyfuel_ref = getelementptr inbounds %struct.RETURN_VAL, %struct.RETURN_VAL* %ret_val, i64 0, i32 2, !dbg !283
+  store double %rtb_Sum_d.0, double* %c_airbyfuel_ref, align 8, !dbg !284, !tbaa !285
+  ret i8* null, !dbg !286
 }
 
 ; Function Attrs: nounwind readnone speculatable
@@ -93,117 +194,293 @@ attributes #0 = { nounwind uwtable "correctly-rounded-divide-sqrt-fp-math"="fals
 attributes #1 = { nounwind readnone speculatable }
 
 !llvm.dbg.cu = !{!0}
-!llvm.module.flags = !{!3, !4, !5}
-!llvm.ident = !{!6}
+!llvm.module.flags = !{!5, !6, !7}
+!llvm.ident = !{!8}
 
-!0 = distinct !DICompileUnit(language: DW_LANG_C99, file: !1, producer: "clang version 7.0.0 ", isOptimized: true, runtimeVersion: 0, emissionKind: FullDebug, enums: !2)
-!1 = !DIFile(filename: "benchmarks/mythermo1.c", directory: "/home/amit/MyData/1ProjectFMSafe/llvm-pass-moduleTest")
+!0 = distinct !DICompileUnit(language: DW_LANG_C99, file: !1, producer: "clang version 7.0.0 ", isOptimized: true, runtimeVersion: 0, emissionKind: FullDebug, enums: !2, retainedTypes: !3)
+!1 = !DIFile(filename: "benchmarks/powerTrain/afc.c", directory: "/home/amit/MyData/1ProjectFMSafe/llvm-pass-moduleTest")
 !2 = !{}
-!3 = !{i32 2, !"Dwarf Version", i32 4}
-!4 = !{i32 2, !"Debug Info Version", i32 3}
-!5 = !{i32 1, !"wchar_size", i32 4}
-!6 = !{!"clang version 7.0.0 "}
-!7 = distinct !DISubprogram(name: "controller", scope: !1, file: !1, line: 4, type: !8, isLocal: false, isDefinition: true, scopeLine: 4, flags: DIFlagPrototyped, isOptimized: true, unit: !0, retainedNodes: !28)
-!8 = !DISubroutineType(types: !9)
-!9 = !{null, !10, !23}
-!10 = !DIDerivedType(tag: DW_TAG_pointer_type, baseType: !11, size: 64)
-!11 = !DIDerivedType(tag: DW_TAG_typedef, name: "INPUT_VAL", file: !12, line: 16, baseType: !13)
-!12 = !DIFile(filename: "benchmarks/thermo1.h", directory: "/home/amit/MyData/1ProjectFMSafe/llvm-pass-moduleTest")
-!13 = distinct !DICompositeType(tag: DW_TAG_structure_type, file: !12, line: 7, size: 256, elements: !14)
-!14 = !{!15, !17, !19, !20, !21, !22}
-!15 = !DIDerivedType(tag: DW_TAG_member, name: "temperature", scope: !13, file: !12, line: 8, baseType: !16, size: 64)
-!16 = !DIBasicType(name: "double", size: 64, encoding: DW_ATE_float)
-!17 = !DIDerivedType(tag: DW_TAG_member, name: "chat_detect", scope: !13, file: !12, line: 10, baseType: !18, size: 32, offset: 64)
-!18 = !DIBasicType(name: "int", size: 32, encoding: DW_ATE_signed)
-!19 = !DIDerivedType(tag: DW_TAG_member, name: "previous_cmd_to_heater", scope: !13, file: !12, line: 11, baseType: !18, size: 32, offset: 96)
-!20 = !DIDerivedType(tag: DW_TAG_member, name: "on_count", scope: !13, file: !12, line: 12, baseType: !18, size: 32, offset: 128)
-!21 = !DIDerivedType(tag: DW_TAG_member, name: "off_count", scope: !13, file: !12, line: 13, baseType: !18, size: 32, offset: 160)
-!22 = !DIDerivedType(tag: DW_TAG_member, name: "cmd_to_heater", scope: !13, file: !12, line: 14, baseType: !18, size: 32, offset: 192)
-!23 = !DIDerivedType(tag: DW_TAG_pointer_type, baseType: !24, size: 64)
-!24 = !DIDerivedType(tag: DW_TAG_typedef, name: "RETURN_VAL", file: !12, line: 5, baseType: !25)
-!25 = distinct !DICompositeType(tag: DW_TAG_structure_type, file: !12, line: 2, size: 64, elements: !26)
-!26 = !{!27}
-!27 = !DIDerivedType(tag: DW_TAG_member, name: "u", scope: !25, file: !12, line: 3, baseType: !16, size: 64)
-!28 = !{!29, !30, !31, !32, !33, !34, !35, !36, !37, !38, !39, !40}
-!29 = !DILocalVariable(name: "input", arg: 1, scope: !7, file: !1, line: 4, type: !10)
-!30 = !DILocalVariable(name: "ret_val", arg: 2, scope: !7, file: !1, line: 4, type: !23)
-!31 = !DILocalVariable(name: "chatter_detect", scope: !7, file: !1, line: 5, type: !18)
-!32 = !DILocalVariable(name: "previous_command_to_heater", scope: !7, file: !1, line: 6, type: !18)
-!33 = !DILocalVariable(name: "on_counter", scope: !7, file: !1, line: 7, type: !18)
-!34 = !DILocalVariable(name: "off_counter", scope: !7, file: !1, line: 7, type: !18)
-!35 = !DILocalVariable(name: "command_to_heater", scope: !7, file: !1, line: 8, type: !18)
-!36 = !DILocalVariable(name: "chatter_limit", scope: !7, file: !1, line: 10, type: !18)
-!37 = !DILocalVariable(name: "uVal", scope: !7, file: !1, line: 11, type: !16)
-!38 = !DILocalVariable(name: "room_temp", scope: !7, file: !1, line: 11, type: !16)
-!39 = !DILocalVariable(name: "MAX_TEMP", scope: !7, file: !1, line: 12, type: !16)
-!40 = !DILocalVariable(name: "MED_TEMP", scope: !7, file: !1, line: 12, type: !16)
-!41 = !DILocation(line: 4, column: 28, scope: !7)
-!42 = !DILocation(line: 4, column: 47, scope: !7)
-!43 = !DILocation(line: 10, column: 6, scope: !7)
-!44 = !DILocation(line: 12, column: 9, scope: !7)
-!45 = !DILocation(line: 12, column: 24, scope: !7)
-!46 = !DILocation(line: 16, column: 21, scope: !7)
-!47 = !{!48, !49, i64 0}
-!48 = !{!"", !49, i64 0, !52, i64 8, !52, i64 12, !52, i64 16, !52, i64 20, !52, i64 24}
-!49 = !{!"double", !50, i64 0}
-!50 = !{!"omnipotent char", !51, i64 0}
-!51 = !{!"Simple C/C++ TBAA"}
-!52 = !{!"int", !50, i64 0}
-!53 = !DILocation(line: 11, column: 15, scope: !7)
-!54 = !DILocation(line: 18, column: 26, scope: !7)
-!55 = !{!48, !52, i64 8}
-!56 = !DILocation(line: 5, column: 6, scope: !7)
-!57 = !DILocation(line: 19, column: 38, scope: !7)
-!58 = !{!48, !52, i64 12}
-!59 = !DILocation(line: 6, column: 6, scope: !7)
-!60 = !DILocation(line: 20, column: 22, scope: !7)
-!61 = !{!48, !52, i64 16}
-!62 = !DILocation(line: 7, column: 6, scope: !7)
-!63 = !DILocation(line: 21, column: 23, scope: !7)
-!64 = !{!48, !52, i64 20}
-!65 = !DILocation(line: 7, column: 18, scope: !7)
-!66 = !DILocation(line: 22, column: 29, scope: !7)
-!67 = !DILocation(line: 8, column: 6, scope: !7)
-!68 = !DILocation(line: 25, column: 15, scope: !69)
-!69 = distinct !DILexicalBlock(scope: !7, file: !1, line: 25, column: 5)
-!70 = !DILocation(line: 25, column: 40, scope: !69)
-!71 = !DILocation(line: 25, column: 27, scope: !69)
-!72 = !DILocation(line: 27, column: 20, scope: !73)
-!73 = distinct !DILexicalBlock(scope: !69, file: !1, line: 27, column: 10)
-!74 = !DILocation(line: 27, column: 10, scope: !69)
-!75 = !DILocation(line: 29, column: 20, scope: !76)
-!76 = distinct !DILexicalBlock(scope: !73, file: !1, line: 29, column: 10)
-!77 = !DILocation(line: 30, column: 3, scope: !76)
-!78 = !DILocation(line: 0, scope: !76)
-!79 = !DILocation(line: 34, column: 17, scope: !80)
-!80 = distinct !DILexicalBlock(scope: !7, file: !1, line: 34, column: 5)
-!81 = !DILocation(line: 34, column: 36, scope: !80)
-!82 = !DILocation(line: 34, column: 22, scope: !80)
-!83 = !DILocation(line: 37, column: 23, scope: !84)
-!84 = distinct !DILexicalBlock(scope: !7, file: !1, line: 37, column: 5)
-!85 = !DILocation(line: 37, column: 5, scope: !7)
-!86 = !DILocation(line: 40, column: 20, scope: !87)
-!87 = distinct !DILexicalBlock(scope: !7, file: !1, line: 40, column: 5)
-!88 = !DILocation(line: 40, column: 5, scope: !7)
-!89 = !DILocation(line: 43, column: 23, scope: !90)
-!90 = distinct !DILexicalBlock(scope: !7, file: !1, line: 43, column: 5)
-!91 = !DILocation(line: 45, column: 14, scope: !92)
-!92 = distinct !DILexicalBlock(scope: !90, file: !1, line: 43, column: 29)
-!93 = !DILocation(line: 47, column: 13, scope: !94)
-!94 = distinct !DILexicalBlock(scope: !90, file: !1, line: 46, column: 9)
-!95 = !DILocation(line: 43, column: 5, scope: !7)
-!96 = !DILocation(line: 53, column: 11, scope: !97)
-!97 = distinct !DILexicalBlock(scope: !7, file: !1, line: 51, column: 6)
-!98 = !DILocation(line: 51, column: 6, scope: !7)
-!99 = !DILocation(line: 11, column: 9, scope: !7)
-!100 = !DILocation(line: 58, column: 11, scope: !7)
-!101 = !DILocation(line: 58, column: 13, scope: !7)
-!102 = !{!103, !49, i64 0}
-!103 = !{!"", !49, i64 0}
-!104 = !DILocation(line: 60, column: 24, scope: !7)
-!105 = !{!48, !52, i64 24}
-!106 = !DILocation(line: 61, column: 22, scope: !7)
-!107 = !DILocation(line: 62, column: 33, scope: !7)
-!108 = !DILocation(line: 63, column: 19, scope: !7)
-!109 = !DILocation(line: 64, column: 20, scope: !7)
-!110 = !DILocation(line: 67, column: 1, scope: !7)
+!3 = !{!4}
+!4 = !DIDerivedType(tag: DW_TAG_pointer_type, baseType: null, size: 64)
+!5 = !{i32 2, !"Dwarf Version", i32 4}
+!6 = !{i32 2, !"Debug Info Version", i32 3}
+!7 = !{i32 1, !"wchar_size", i32 4}
+!8 = !{!"clang version 7.0.0 "}
+!9 = distinct !DISubprogram(name: "controller", scope: !1, file: !1, line: 41, type: !10, isLocal: false, isDefinition: true, scopeLine: 42, flags: DIFlagPrototyped, isOptimized: true, unit: !0, retainedNodes: !36)
+!10 = !DISubroutineType(types: !11)
+!11 = !{!4, !12, !29}
+!12 = !DIDerivedType(tag: DW_TAG_pointer_type, baseType: !13, size: 64)
+!13 = !DIDerivedType(tag: DW_TAG_typedef, name: "INPUT_VAL", file: !14, line: 24, baseType: !15)
+!14 = !DIFile(filename: "benchmarks/powerTrain/controller.h", directory: "/home/amit/MyData/1ProjectFMSafe/llvm-pass-moduleTest")
+!15 = distinct !DICompositeType(tag: DW_TAG_structure_type, file: !14, line: 9, size: 704, elements: !16)
+!16 = !{!17, !19, !20, !21, !22, !23, !24, !25, !26, !27, !28}
+!17 = !DIDerivedType(tag: DW_TAG_member, name: "p_normal_mode_detect_1", scope: !15, file: !14, line: 11, baseType: !18, size: 64)
+!18 = !DIBasicType(name: "double", size: 64, encoding: DW_ATE_float)
+!19 = !DIDerivedType(tag: DW_TAG_member, name: "p_pi", scope: !15, file: !14, line: 12, baseType: !18, size: 64, offset: 64)
+!20 = !DIDerivedType(tag: DW_TAG_member, name: "p_air_estimate", scope: !15, file: !14, line: 13, baseType: !18, size: 64, offset: 128)
+!21 = !DIDerivedType(tag: DW_TAG_member, name: "p_sensor_fail_detect", scope: !15, file: !14, line: 14, baseType: !18, size: 64, offset: 192)
+!22 = !DIDerivedType(tag: DW_TAG_member, name: "p_power_mode_detect", scope: !15, file: !14, line: 15, baseType: !18, size: 64, offset: 256)
+!23 = !DIDerivedType(tag: DW_TAG_member, name: "p_normal_mode_detect_1_e", scope: !15, file: !14, line: 16, baseType: !18, size: 64, offset: 320)
+!24 = !DIDerivedType(tag: DW_TAG_member, name: "p_Sum3", scope: !15, file: !14, line: 17, baseType: !18, size: 64, offset: 384)
+!25 = !DIDerivedType(tag: DW_TAG_member, name: "p_engine_speed", scope: !15, file: !14, line: 19, baseType: !18, size: 64, offset: 448)
+!26 = !DIDerivedType(tag: DW_TAG_member, name: "p_throttle_angle", scope: !15, file: !14, line: 20, baseType: !18, size: 64, offset: 512)
+!27 = !DIDerivedType(tag: DW_TAG_member, name: "p_throttle_flow", scope: !15, file: !14, line: 21, baseType: !18, size: 64, offset: 576)
+!28 = !DIDerivedType(tag: DW_TAG_member, name: "p_airbyfuel_meas", scope: !15, file: !14, line: 22, baseType: !18, size: 64, offset: 640)
+!29 = !DIDerivedType(tag: DW_TAG_pointer_type, baseType: !30, size: 64)
+!30 = !DIDerivedType(tag: DW_TAG_typedef, name: "RETURN_VAL", file: !14, line: 7, baseType: !31)
+!31 = distinct !DICompositeType(tag: DW_TAG_structure_type, file: !14, line: 1, size: 192, elements: !32)
+!32 = !{!33, !34, !35}
+!33 = !DIDerivedType(tag: DW_TAG_member, name: "c_commanded_fuel_gps", scope: !31, file: !14, line: 3, baseType: !18, size: 64)
+!34 = !DIDerivedType(tag: DW_TAG_member, name: "c_controller_mode", scope: !31, file: !14, line: 4, baseType: !18, size: 64, offset: 64)
+!35 = !DIDerivedType(tag: DW_TAG_member, name: "c_airbyfuel_ref", scope: !31, file: !14, line: 5, baseType: !18, size: 64, offset: 128)
+!36 = !{!37, !38, !39, !45, !77, !78, !79, !80, !81, !82, !83, !84, !85, !86, !87, !88, !89, !90, !91, !92, !93, !94, !95, !96, !97, !98, !99, !100, !101, !102, !103, !104, !106, !108, !109}
+!37 = !DILocalVariable(name: "input", arg: 1, scope: !9, file: !1, line: 41, type: !12)
+!38 = !DILocalVariable(name: "ret_val", arg: 2, scope: !9, file: !1, line: 41, type: !29)
+!39 = !DILocalVariable(name: "Z_AF_Controller_B", scope: !9, file: !1, line: 44, type: !40)
+!40 = !DIDerivedType(tag: DW_TAG_typedef, name: "B_Z_AF_Controller_T", file: !1, line: 8, baseType: !41)
+!41 = distinct !DICompositeType(tag: DW_TAG_structure_type, file: !1, line: 6, size: 64, elements: !42)
+!42 = !{!43}
+!43 = !DIDerivedType(tag: DW_TAG_member, name: "Sum3", scope: !41, file: !1, line: 7, baseType: !44, size: 64)
+!44 = !DIDerivedType(tag: DW_TAG_typedef, name: "real32_T", file: !1, line: 2, baseType: !18)
+!45 = !DILocalVariable(name: "Z_AF_Controller_DW", scope: !9, file: !1, line: 47, type: !46)
+!46 = !DIDerivedType(tag: DW_TAG_typedef, name: "DW_Z_AF_Controller_T", file: !1, line: 37, baseType: !47)
+!47 = distinct !DICompositeType(tag: DW_TAG_structure_type, file: !1, line: 10, size: 576, elements: !48)
+!48 = !{!49, !53, !57, !61, !65, !69, !70, !71, !72, !75, !76}
+!49 = !DIDerivedType(tag: DW_TAG_member, name: "afc_PWORK", scope: !47, file: !1, line: 13, baseType: !50, size: 64)
+!50 = distinct !DICompositeType(tag: DW_TAG_structure_type, scope: !47, file: !1, line: 11, size: 64, elements: !51)
+!51 = !{!52}
+!52 = !DIDerivedType(tag: DW_TAG_member, name: "LoggedData", scope: !50, file: !1, line: 12, baseType: !4, size: 64)
+!53 = !DIDerivedType(tag: DW_TAG_member, name: "fc_PWORK", scope: !47, file: !1, line: 17, baseType: !54, size: 64, offset: 64)
+!54 = distinct !DICompositeType(tag: DW_TAG_structure_type, scope: !47, file: !1, line: 15, size: 64, elements: !55)
+!55 = !{!56}
+!56 = !DIDerivedType(tag: DW_TAG_member, name: "LoggedData", scope: !54, file: !1, line: 16, baseType: !4, size: 64)
+!57 = !DIDerivedType(tag: DW_TAG_member, name: "Scope_PWORK", scope: !47, file: !1, line: 21, baseType: !58, size: 64, offset: 128)
+!58 = distinct !DICompositeType(tag: DW_TAG_structure_type, scope: !47, file: !1, line: 19, size: 64, elements: !59)
+!59 = !{!60}
+!60 = !DIDerivedType(tag: DW_TAG_member, name: "LoggedData", scope: !58, file: !1, line: 20, baseType: !4, size: 64)
+!61 = !DIDerivedType(tag: DW_TAG_member, name: "fb_sat_PWORK", scope: !47, file: !1, line: 25, baseType: !62, size: 64, offset: 192)
+!62 = distinct !DICompositeType(tag: DW_TAG_structure_type, scope: !47, file: !1, line: 23, size: 64, elements: !63)
+!63 = !{!64}
+!64 = !DIDerivedType(tag: DW_TAG_member, name: "LoggedData", scope: !62, file: !1, line: 24, baseType: !4, size: 64)
+!65 = !DIDerivedType(tag: DW_TAG_member, name: "mode_PWORK", scope: !47, file: !1, line: 29, baseType: !66, size: 64, offset: 256)
+!66 = distinct !DICompositeType(tag: DW_TAG_structure_type, scope: !47, file: !1, line: 27, size: 64, elements: !67)
+!67 = !{!68}
+!68 = !DIDerivedType(tag: DW_TAG_member, name: "LoggedData", scope: !66, file: !1, line: 28, baseType: !4, size: 64)
+!69 = !DIDerivedType(tag: DW_TAG_member, name: "normal_mode_detect_1", scope: !47, file: !1, line: 31, baseType: !44, size: 64, offset: 320)
+!70 = !DIDerivedType(tag: DW_TAG_member, name: "pi", scope: !47, file: !1, line: 32, baseType: !44, size: 64, offset: 384)
+!71 = !DIDerivedType(tag: DW_TAG_member, name: "air_estimate", scope: !47, file: !1, line: 33, baseType: !44, size: 64, offset: 448)
+!72 = !DIDerivedType(tag: DW_TAG_member, name: "sensor_fail_detect", scope: !47, file: !1, line: 34, baseType: !73, size: 8, offset: 512)
+!73 = !DIDerivedType(tag: DW_TAG_typedef, name: "boolean_T", file: !1, line: 3, baseType: !74)
+!74 = !DIBasicType(name: "unsigned char", size: 8, encoding: DW_ATE_unsigned_char)
+!75 = !DIDerivedType(tag: DW_TAG_member, name: "power_mode_detect", scope: !47, file: !1, line: 35, baseType: !73, size: 8, offset: 520)
+!76 = !DIDerivedType(tag: DW_TAG_member, name: "normal_mode_detect_1_e", scope: !47, file: !1, line: 36, baseType: !73, size: 8, offset: 528)
+!77 = !DILocalVariable(name: "commanded_fuel_gps", scope: !9, file: !1, line: 50, type: !44)
+!78 = !DILocalVariable(name: "controller_mode", scope: !9, file: !1, line: 51, type: !73)
+!79 = !DILocalVariable(name: "airbyfuel_ref", scope: !9, file: !1, line: 52, type: !44)
+!80 = !DILocalVariable(name: "engine_speed", scope: !9, file: !1, line: 55, type: !18)
+!81 = !DILocalVariable(name: "throttle_angle", scope: !9, file: !1, line: 56, type: !18)
+!82 = !DILocalVariable(name: "throttle_flow", scope: !9, file: !1, line: 57, type: !18)
+!83 = !DILocalVariable(name: "airbyfuel_meas", scope: !9, file: !1, line: 58, type: !18)
+!84 = !DILocalVariable(name: "rtb_DataStoreRead2", scope: !9, file: !1, line: 61, type: !44)
+!85 = !DILocalVariable(name: "rtb_DataStoreRead", scope: !9, file: !1, line: 62, type: !44)
+!86 = !DILocalVariable(name: "rtb_DataStoreRead4_c", scope: !9, file: !1, line: 63, type: !44)
+!87 = !DILocalVariable(name: "rtb_DataStoreRead3", scope: !9, file: !1, line: 64, type: !44)
+!88 = !DILocalVariable(name: "rtb_DataStoreRead5", scope: !9, file: !1, line: 65, type: !44)
+!89 = !DILocalVariable(name: "rtb_DataStoreRead6", scope: !9, file: !1, line: 66, type: !44)
+!90 = !DILocalVariable(name: "rtb_Switch_n0", scope: !9, file: !1, line: 67, type: !44)
+!91 = !DILocalVariable(name: "rtb_DataStoreRead1_a", scope: !9, file: !1, line: 68, type: !73)
+!92 = !DILocalVariable(name: "rtb_LogicalOperator_d", scope: !9, file: !1, line: 69, type: !73)
+!93 = !DILocalVariable(name: "rtb_DataStoreRead3_f", scope: !9, file: !1, line: 70, type: !73)
+!94 = !DILocalVariable(name: "rtb_LogicalOperator", scope: !9, file: !1, line: 71, type: !73)
+!95 = !DILocalVariable(name: "rtb_RelationalOperator1", scope: !9, file: !1, line: 72, type: !73)
+!96 = !DILocalVariable(name: "rtb_Sum_d", scope: !9, file: !1, line: 73, type: !44)
+!97 = !DILocalVariable(name: "rtb_Sum3", scope: !9, file: !1, line: 74, type: !44)
+!98 = !DILocalVariable(name: "rtb_Sum1_d", scope: !9, file: !1, line: 75, type: !44)
+!99 = !DILocalVariable(name: "rtb_Sum2", scope: !9, file: !1, line: 76, type: !44)
+!100 = !DILocalVariable(name: "Z_AF_Controller_U_engine_speed_radps", scope: !9, file: !1, line: 80, type: !44)
+!101 = !DILocalVariable(name: "Z_AF_Controller_U_throttle_angle_deg", scope: !9, file: !1, line: 80, type: !44)
+!102 = !DILocalVariable(name: "Z_AF_Controller_U_throttle_flow_gps", scope: !9, file: !1, line: 80, type: !44)
+!103 = !DILocalVariable(name: "Z_AF_Controller_U_airbyfuel_meas", scope: !9, file: !1, line: 80, type: !44)
+!104 = !DILocalVariable(name: "Z_AF_Controller_Y_commanded_fuel_gps", scope: !9, file: !1, line: 80, type: !105)
+!105 = !DIDerivedType(tag: DW_TAG_pointer_type, baseType: !44, size: 64)
+!106 = !DILocalVariable(name: "Z_AF_Controller_Y_controller_mode", scope: !9, file: !1, line: 81, type: !107)
+!107 = !DIDerivedType(tag: DW_TAG_pointer_type, baseType: !73, size: 64)
+!108 = !DILocalVariable(name: "Z_AF_Controller_Y_airbyfuel_ref", scope: !9, file: !1, line: 82, type: !105)
+!109 = !DILocalVariable(name: "Z_AF_Controller_P", scope: !9, file: !1, line: 124, type: !110)
+!110 = !DIDerivedType(tag: DW_TAG_typedef, name: "P_Z_AF_Controller_T", scope: !9, file: !1, line: 123, baseType: !111)
+!111 = distinct !DICompositeType(tag: DW_TAG_structure_type, name: "P_Z_AF_Controller_T_", scope: !9, file: !1, line: 86, size: 2048, elements: !112)
+!112 = !{!113, !114, !115, !116, !117, !118, !119, !120, !121, !122, !123, !124, !125, !126, !127, !128, !129, !130, !131, !132, !133, !134, !135, !136, !137, !138, !139, !140, !141, !142, !143, !144, !145, !146, !147}
+!113 = !DIDerivedType(tag: DW_TAG_member, name: "Constant2_Value", scope: !111, file: !1, line: 87, baseType: !44, size: 64)
+!114 = !DIDerivedType(tag: DW_TAG_member, name: "fb_fuel_saturation_UpperSat", scope: !111, file: !1, line: 88, baseType: !44, size: 64, offset: 64)
+!115 = !DIDerivedType(tag: DW_TAG_member, name: "fb_fuel_saturation_LowerSat", scope: !111, file: !1, line: 89, baseType: !44, size: 64, offset: 128)
+!116 = !DIDerivedType(tag: DW_TAG_member, name: "Constant3_Value", scope: !111, file: !1, line: 90, baseType: !44, size: 64, offset: 192)
+!117 = !DIDerivedType(tag: DW_TAG_member, name: "Constant1_Value", scope: !111, file: !1, line: 91, baseType: !44, size: 64, offset: 256)
+!118 = !DIDerivedType(tag: DW_TAG_member, name: "Constant2_Value_e", scope: !111, file: !1, line: 92, baseType: !44, size: 64, offset: 320)
+!119 = !DIDerivedType(tag: DW_TAG_member, name: "Constant3_Value_e", scope: !111, file: !1, line: 93, baseType: !44, size: 64, offset: 384)
+!120 = !DIDerivedType(tag: DW_TAG_member, name: "Constant4_Value", scope: !111, file: !1, line: 94, baseType: !44, size: 64, offset: 448)
+!121 = !DIDerivedType(tag: DW_TAG_member, name: "Constant5_Value", scope: !111, file: !1, line: 95, baseType: !44, size: 64, offset: 512)
+!122 = !DIDerivedType(tag: DW_TAG_member, name: "UnitDelay1_InitialCondition", scope: !111, file: !1, line: 96, baseType: !44, size: 64, offset: 576)
+!123 = !DIDerivedType(tag: DW_TAG_member, name: "Gain_Gain", scope: !111, file: !1, line: 97, baseType: !44, size: 64, offset: 640)
+!124 = !DIDerivedType(tag: DW_TAG_member, name: "Constant1_Value_m", scope: !111, file: !1, line: 98, baseType: !44, size: 64, offset: 704)
+!125 = !DIDerivedType(tag: DW_TAG_member, name: "Gain_Gain_b", scope: !111, file: !1, line: 99, baseType: !44, size: 64, offset: 768)
+!126 = !DIDerivedType(tag: DW_TAG_member, name: "Gain1_Gain", scope: !111, file: !1, line: 100, baseType: !44, size: 64, offset: 832)
+!127 = !DIDerivedType(tag: DW_TAG_member, name: "UnitDelay1_InitialCondition_f", scope: !111, file: !1, line: 101, baseType: !44, size: 64, offset: 896)
+!128 = !DIDerivedType(tag: DW_TAG_member, name: "fuel_saturation_UpperSat", scope: !111, file: !1, line: 102, baseType: !44, size: 64, offset: 960)
+!129 = !DIDerivedType(tag: DW_TAG_member, name: "fuel_saturation_LowerSat", scope: !111, file: !1, line: 103, baseType: !44, size: 64, offset: 1024)
+!130 = !DIDerivedType(tag: DW_TAG_member, name: "airbyfuel_reference_Value", scope: !111, file: !1, line: 104, baseType: !44, size: 64, offset: 1088)
+!131 = !DIDerivedType(tag: DW_TAG_member, name: "airbyfuel_reference_power_Value", scope: !111, file: !1, line: 105, baseType: !44, size: 64, offset: 1152)
+!132 = !DIDerivedType(tag: DW_TAG_member, name: "UnitDelay2_InitialCondition", scope: !111, file: !1, line: 106, baseType: !44, size: 64, offset: 1216)
+!133 = !DIDerivedType(tag: DW_TAG_member, name: "sampling_sec_Value", scope: !111, file: !1, line: 107, baseType: !44, size: 64, offset: 1280)
+!134 = !DIDerivedType(tag: DW_TAG_member, name: "normal_mode_start_sec_Value", scope: !111, file: !1, line: 108, baseType: !44, size: 64, offset: 1344)
+!135 = !DIDerivedType(tag: DW_TAG_member, name: "Constant1_Value_b", scope: !111, file: !1, line: 109, baseType: !44, size: 64, offset: 1408)
+!136 = !DIDerivedType(tag: DW_TAG_member, name: "Constant_Value", scope: !111, file: !1, line: 110, baseType: !44, size: 64, offset: 1472)
+!137 = !DIDerivedType(tag: DW_TAG_member, name: "threshold_Value", scope: !111, file: !1, line: 111, baseType: !44, size: 64, offset: 1536)
+!138 = !DIDerivedType(tag: DW_TAG_member, name: "DataStoreMemory_InitialValue", scope: !111, file: !1, line: 112, baseType: !44, size: 64, offset: 1600)
+!139 = !DIDerivedType(tag: DW_TAG_member, name: "DataStoreMemory1_InitialValue", scope: !111, file: !1, line: 113, baseType: !44, size: 64, offset: 1664)
+!140 = !DIDerivedType(tag: DW_TAG_member, name: "DataStoreMemory2_InitialValue", scope: !111, file: !1, line: 114, baseType: !44, size: 64, offset: 1728)
+!141 = !DIDerivedType(tag: DW_TAG_member, name: "DataStoreMemory3_InitialValue", scope: !111, file: !1, line: 115, baseType: !44, size: 64, offset: 1792)
+!142 = !DIDerivedType(tag: DW_TAG_member, name: "commanded_fuel_InitialValue", scope: !111, file: !1, line: 116, baseType: !44, size: 64, offset: 1856)
+!143 = !DIDerivedType(tag: DW_TAG_member, name: "mode_fb1_InitialValue", scope: !111, file: !1, line: 117, baseType: !44, size: 64, offset: 1920)
+!144 = !DIDerivedType(tag: DW_TAG_member, name: "UnitDelay1_InitialCondition_l", scope: !111, file: !1, line: 118, baseType: !73, size: 8, offset: 1984)
+!145 = !DIDerivedType(tag: DW_TAG_member, name: "UnitDelay1_InitialCondition_j", scope: !111, file: !1, line: 119, baseType: !73, size: 8, offset: 1992)
+!146 = !DIDerivedType(tag: DW_TAG_member, name: "UnitDelay_InitialCondition", scope: !111, file: !1, line: 120, baseType: !73, size: 8, offset: 2000)
+!147 = !DIDerivedType(tag: DW_TAG_member, name: "mode_fb_InitialValue", scope: !111, file: !1, line: 121, baseType: !73, size: 8, offset: 2008)
+!148 = !DILocation(line: 41, column: 29, scope: !9)
+!149 = !DILocation(line: 41, column: 48, scope: !9)
+!150 = !DILocation(line: 55, column: 32, scope: !9)
+!151 = !{!152, !153, i64 56}
+!152 = !{!"", !153, i64 0, !153, i64 8, !153, i64 16, !153, i64 24, !153, i64 32, !153, i64 40, !153, i64 48, !153, i64 56, !153, i64 64, !153, i64 72, !153, i64 80}
+!153 = !{!"double", !154, i64 0}
+!154 = !{!"omnipotent char", !155, i64 0}
+!155 = !{!"Simple C/C++ TBAA"}
+!156 = !DILocation(line: 55, column: 10, scope: !9)
+!157 = !DILocation(line: 56, column: 34, scope: !9)
+!158 = !{!152, !153, i64 64}
+!159 = !DILocation(line: 56, column: 10, scope: !9)
+!160 = !DILocation(line: 57, column: 33, scope: !9)
+!161 = !{!152, !153, i64 72}
+!162 = !DILocation(line: 57, column: 10, scope: !9)
+!163 = !DILocation(line: 58, column: 34, scope: !9)
+!164 = !{!152, !153, i64 80}
+!165 = !DILocation(line: 58, column: 10, scope: !9)
+!166 = !DILocation(line: 124, column: 21, scope: !9)
+!167 = !DILocation(line: 163, column: 52, scope: !9)
+!168 = !{!152, !153, i64 0}
+!169 = !DILocation(line: 47, column: 24, scope: !9)
+!170 = !DILocation(line: 164, column: 34, scope: !9)
+!171 = !{!152, !153, i64 8}
+!172 = !DILocation(line: 165, column: 44, scope: !9)
+!173 = !{!152, !153, i64 16}
+!174 = !DILocation(line: 166, column: 50, scope: !9)
+!175 = !{!152, !153, i64 24}
+!176 = !DILocation(line: 166, column: 43, scope: !9)
+!177 = !DILocation(line: 167, column: 49, scope: !9)
+!178 = !{!152, !153, i64 32}
+!179 = !DILocation(line: 167, column: 42, scope: !9)
+!180 = !DILocation(line: 168, column: 54, scope: !9)
+!181 = !{!152, !153, i64 40}
+!182 = !DILocation(line: 168, column: 47, scope: !9)
+!183 = !DILocation(line: 169, column: 35, scope: !9)
+!184 = !{!152, !153, i64 48}
+!185 = !DILocation(line: 44, column: 23, scope: !9)
+!186 = !DILocation(line: 80, column: 10, scope: !9)
+!187 = !DILocation(line: 80, column: 48, scope: !9)
+!188 = !DILocation(line: 80, column: 86, scope: !9)
+!189 = !DILocation(line: 80, column: 123, scope: !9)
+!190 = !DILocation(line: 193, column: 60, scope: !9)
+!191 = !DILocation(line: 194, column: 40, scope: !9)
+!192 = !DILocation(line: 197, column: 55, scope: !9)
+!193 = !DILocation(line: 73, column: 12, scope: !9)
+!194 = !DILocation(line: 199, column: 39, scope: !9)
+!195 = !DILocation(line: 200, column: 52, scope: !9)
+!196 = !DILocation(line: 204, column: 7, scope: !197)
+!197 = distinct !DILexicalBlock(scope: !9, file: !1, line: 204, column: 7)
+!198 = !DILocation(line: 75, column: 12, scope: !9)
+!199 = !DILocation(line: 211, column: 67, scope: !9)
+!200 = !DILocation(line: 213, column: 26, scope: !9)
+!201 = !DILocation(line: 213, column: 46, scope: !9)
+!202 = !DILocation(line: 215, column: 29, scope: !203)
+!203 = distinct !DILexicalBlock(scope: !9, file: !1, line: 215, column: 7)
+!204 = !DILocation(line: 221, column: 48, scope: !9)
+!205 = !DILocation(line: 222, column: 53, scope: !9)
+!206 = !DILocation(line: 223, column: 52, scope: !9)
+!207 = !DILocation(line: 225, column: 47, scope: !9)
+!208 = !DILocation(line: 226, column: 47, scope: !9)
+!209 = !DILocation(line: 227, column: 52, scope: !9)
+!210 = !DILocation(line: 229, column: 42, scope: !9)
+!211 = !DILocation(line: 229, column: 81, scope: !9)
+!212 = !DILocation(line: 230, column: 37, scope: !9)
+!213 = !DILocation(line: 228, column: 50, scope: !9)
+!214 = !DILocation(line: 74, column: 12, scope: !9)
+!215 = !DILocation(line: 231, column: 75, scope: !9)
+!216 = !DILocation(line: 232, column: 15, scope: !9)
+!217 = !DILocation(line: 232, column: 45, scope: !9)
+!218 = !DILocation(line: 231, column: 35, scope: !9)
+!219 = !DILocation(line: 235, column: 7, scope: !9)
+!220 = !DILocation(line: 236, column: 51, scope: !221)
+!221 = distinct !DILexicalBlock(scope: !222, file: !1, line: 235, column: 30)
+!222 = distinct !DILexicalBlock(scope: !9, file: !1, line: 235, column: 7)
+!223 = !DILocation(line: 237, column: 45, scope: !221)
+!224 = !DILocation(line: 237, column: 58, scope: !221)
+!225 = !DILocation(line: 238, column: 43, scope: !221)
+!226 = !DILocation(line: 76, column: 12, scope: !9)
+!227 = !DILocation(line: 239, column: 60, scope: !221)
+!228 = !DILocation(line: 239, column: 73, scope: !221)
+!229 = !DILocation(line: 247, column: 52, scope: !230)
+!230 = distinct !DILexicalBlock(scope: !231, file: !1, line: 246, column: 10)
+!231 = distinct !DILexicalBlock(scope: !9, file: !1, line: 244, column: 7)
+!232 = !DILocation(line: 248, column: 20, scope: !233)
+!233 = distinct !DILexicalBlock(scope: !230, file: !1, line: 248, column: 9)
+!234 = !DILocation(line: 248, column: 9, scope: !230)
+!235 = !DILocation(line: 250, column: 27, scope: !236)
+!236 = distinct !DILexicalBlock(scope: !233, file: !1, line: 250, column: 16)
+!237 = !DILocation(line: 252, column: 5, scope: !238)
+!238 = distinct !DILexicalBlock(scope: !236, file: !1, line: 250, column: 76)
+!239 = !DILocation(line: 0, scope: !240)
+!240 = distinct !DILexicalBlock(scope: !236, file: !1, line: 252, column: 12)
+!241 = !DILocation(line: 67, column: 12, scope: !9)
+!242 = !DILocation(line: 257, column: 25, scope: !9)
+!243 = !DILocation(line: 257, column: 37, scope: !9)
+!244 = !DILocation(line: 258, column: 18, scope: !245)
+!245 = distinct !DILexicalBlock(scope: !9, file: !1, line: 258, column: 7)
+!246 = !DILocation(line: 260, column: 25, scope: !247)
+!247 = distinct !DILexicalBlock(scope: !245, file: !1, line: 260, column: 14)
+!248 = !DILocation(line: 262, column: 3, scope: !249)
+!249 = distinct !DILexicalBlock(scope: !247, file: !1, line: 260, column: 71)
+!250 = !DILocation(line: 258, column: 7, scope: !9)
+!251 = !DILocation(line: 62, column: 12, scope: !9)
+!252 = !DILocation(line: 63, column: 12, scope: !9)
+!253 = !DILocation(line: 64, column: 12, scope: !9)
+!254 = !DILocation(line: 65, column: 12, scope: !9)
+!255 = !DILocation(line: 66, column: 12, scope: !9)
+!256 = !DILocation(line: 61, column: 12, scope: !9)
+!257 = !DILocation(line: 50, column: 12, scope: !9)
+!258 = !DILocation(line: 52, column: 12, scope: !9)
+!259 = !DILocation(line: 280, column: 32, scope: !9)
+!260 = !DILocation(line: 281, column: 14, scope: !9)
+!261 = !DILocation(line: 282, column: 24, scope: !9)
+!262 = !DILocation(line: 283, column: 32, scope: !9)
+!263 = !DILocation(line: 71, column: 13, scope: !9)
+!264 = !DILocation(line: 283, column: 30, scope: !9)
+!265 = !DILocation(line: 284, column: 31, scope: !9)
+!266 = !DILocation(line: 72, column: 13, scope: !9)
+!267 = !DILocation(line: 284, column: 29, scope: !9)
+!268 = !DILocation(line: 285, column: 36, scope: !9)
+!269 = !DILocation(line: 69, column: 13, scope: !9)
+!270 = !DILocation(line: 285, column: 34, scope: !9)
+!271 = !DILocation(line: 286, column: 16, scope: !9)
+!272 = !DILocation(line: 289, column: 12, scope: !9)
+!273 = !DILocation(line: 289, column: 33, scope: !9)
+!274 = !{!275, !153, i64 0}
+!275 = !{!"", !153, i64 0, !153, i64 8, !153, i64 16}
+!276 = !DILocation(line: 290, column: 32, scope: !9)
+!277 = !DILocation(line: 70, column: 13, scope: !9)
+!278 = !DILocation(line: 68, column: 13, scope: !9)
+!279 = !DILocation(line: 51, column: 13, scope: !9)
+!280 = !DILocation(line: 290, column: 12, scope: !9)
+!281 = !DILocation(line: 290, column: 30, scope: !9)
+!282 = !{!275, !153, i64 8}
+!283 = !DILocation(line: 291, column: 12, scope: !9)
+!284 = !DILocation(line: 291, column: 28, scope: !9)
+!285 = !{!275, !153, i64 16}
+!286 = !DILocation(line: 296, column: 3, scope: !9)

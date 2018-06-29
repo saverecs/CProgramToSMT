@@ -19,18 +19,20 @@
 #include <llvm/IR/Instructions.h>
 #include "allStackVariables.h"
 
+/*
+ * Print SSA onto an output file
+ */
+void printSSA_toFile(std::ofstream& outFile, IRssa::ptr& ir_ssa);
+
+
 
 /*
  * Main wrapper function that makes recursive calls to function within function calls (if any).
  */
-
 void convertFunctionToSSA(funcDump& funcData, IRssa::ptr& ir_ssa);
 
-/*
- * Print SSA onto an output file
- */
 
-void printSSA_toFile(std::ofstream& outFile, IRssa::ptr& ir_ssa);
+void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& workingVariable, IRssa::ptr& ir_ssa);
 
 
 

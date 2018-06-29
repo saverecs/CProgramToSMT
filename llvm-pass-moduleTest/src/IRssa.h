@@ -53,7 +53,7 @@ class IRssa {
 public:
 	typedef boost::shared_ptr<IRssa> ptr;
 
-	void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& workingVariable);
+	//void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& workingVariable);
 	std::list<std::pair<unsigned int, std::string> > getAllInsts();
 	/*
 	 * Search from reverse an string item in the list and Replace with the given string.

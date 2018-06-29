@@ -48,8 +48,7 @@ struct TestPass: public ModulePass {
 					for (BasicBlock &B : F) {	//Blocks of the Function
 						if (isa<BasicBlock>(B)) {
 							bkName = B.getName();
-							outs() << "\n " << funcName
-									<< " : Found a Function !!\n";
+							//outs() << "\n " << bkName << ": Found a BasicBlock !!\n";
 						}
 						std::list<Instruction *> listInst;
 
@@ -80,13 +79,13 @@ struct TestPass: public ModulePass {
 
 
 			ir_ssa->setFunctionDump(workingList);	//required for recursive function call
-			outs() << "\nWorking list of Function set\n";
+			//outs() << "\nWorking list of Function set\n";
 
 			funcDump funcData;
 			funcData = workingList["controller"];	//Starting from the controller function
 			//std::list<std::pair<std::string, std::list<Instruction *> > >::iterator fit;
 
-			outs() << "\nBefore Call to Function convert to SSA\n";
+			//outs() << "\nBefore Call to Function convert to SSA\n";
 			convertFunctionToSSA(funcData, ir_ssa);
 
 			std::ofstream outFile;
