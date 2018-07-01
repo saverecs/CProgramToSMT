@@ -149,9 +149,18 @@ void IRssa::setOutputVariable(std::string varName, unsigned int id, std::string 
 	}
 }
 
+bool IRssa::findVariable(string var, string &varDataType) {
+	bool found = false;
+	std::list<std::pair<std::string, std::string> >::iterator it;
+	for (it = ssaVariables.begin(); it != ssaVariables.end(); it++) {
+		if (boost::iequals((*it).first, var)) {
+			found = true;
+			varDataType = (*it).second;
+		}
+	}
 
-
-
+	return found;
+}
 
 
 

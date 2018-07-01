@@ -312,7 +312,7 @@ void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& wo
 				//std::cout<<"% substr/var = "<<Str.substr(pos+1)<<std::endl;
 				if (pos > 0){ //otherwise a value creation due to optimization
 					ir_ssa->setVariable(Str.substr(pos + 1), "Real"); //Found a variable declaration
-					std::cout<<"Type = Real and Var = "<<Str.substr(pos + 1)<<std::endl;
+					//std::cout<<"Type = Real and Var = "<<Str.substr(pos + 1)<<std::endl;
 				}
 			} else if (!(F->getName().startswith("llvm."))) { //indicate that it is a function call
 				string theFunction = F->getName();
@@ -325,13 +325,8 @@ void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& wo
 					std::cout<<"Found list of Blocks ("<<nextFunction.size()<<")/Instruction inside the Function!!\n";
 					std::cout<<std::endl;	std::cout<<std::endl;
 
-
-
 					convertFunctionToSSA(nextFunction, ir_ssa);
 
-					std::cout<<"=========  I am calling recursively =============" <<std::endl;
-
-					std::cout<<"=========  "<< theFunction << "   =============" <<std::endl;
 				}
 				std::cout << std::endl;
 			}
@@ -368,8 +363,8 @@ void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& wo
 			cout<<"Unknown DataType"<<std::endl;
 			varType = "Real";//Todo:: For now converting to real
 		}
-		std::cout << "\nVariable name = " << st << " and type = "<<varType << std::endl;
-		std::cout << "\nAlignment value  = " << allocaInst->getAlignment() << std::endl;
+		//std::cout << "\nVariable name = " << st << " and type = "<<varType << std::endl;
+		//std::cout << "\nAlignment value  = " << allocaInst->getAlignment() << std::endl;
 
 		ir_ssa->setVariable(st, varType);		  //Found a variable declaration
 
@@ -379,8 +374,6 @@ void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& wo
 		//simpleVar.varName = allocaInst->getName();
 		//	simpleVar.varValue = string(0);
 //		std::cout << "\t\tDefining variable = " << my_inst << ";" << std::endl;
-
-
 
 
 	}
@@ -441,19 +434,28 @@ void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& wo
 		Type *type = getElementPtrInst->getSourceElementType();
 		//std::string name = getElementPtrInst->getOperand(0)->getName();
 		varName = getElementPtrInst->getName();
-		varType = "Real";	//Todo:: get the actual data type either, Int or Real
-		/*if (value->getType()->isIntegerTy()) {
-		 varType = "Int";
-		 outs() << varType << "\n";
-		 } else if (value->getType()->isDoubleTy()) {
-		 varType = "Real Double";
-		 outs() << varType << "\n";
-		 } else if (value->getType()->isFloatTy()) {
-		 varType = "Real Float";
-		 outs() << varType << "\n";
-		}*/
-		/*
-		outs() << "\n====Name:"<<getElementPtrInst->getName()<<"=====";
+	//	varType = "Real";
+
+		StructType *mytype = dyn_cast<StructType>(getElementPtrInst->getType());
+		string mystructIndex;
+		mystructIndex = getVariable_or_Value(getElementPtrInst->getOperand(2));
+		//outs()<<"Index = " <<mystructIndex;
+		unsigned int ind = stoi(mystructIndex);
+		Type *tt = type->getStructElementType(ind);	//Todo:: Need to verify for Int type
+		if (tt->isIntegerTy()) {
+			varType = "Int";
+		//	outs() << varType << "\n";
+		} else if (tt->isDoubleTy()) {
+			varType = "Real";
+		//	outs() << varType << "\n";
+		} else if (tt->isFloatTy()) {
+			varType = "Real";
+		//	outs() << varType << "\n";
+		}
+
+	//	outs() << "\n==OpCodeName(0)'s Name:"<<getElementPtrInst->s<<"==\n";
+
+		/*outs() << "\n====Name:"<<getElementPtrInst->getName()<<"=====";
 		outs() << "\n====Operand(0)'s Name:"<<getVariable_or_Value(getElementPtrInst->getOperand(0))<<"=====";
 		outs() << "\n====Operand(1)'s Name:"<<getVariable_or_Value(getElementPtrInst->getOperand(1))<<"=====";
 		outs() << "\n====Operand(2)'s Name:"<<getVariable_or_Value(getElementPtrInst->getOperand(2))<<"=====";
@@ -466,8 +468,7 @@ void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& wo
 		if (type->getTypeID() == Type::StructTyID) {
 			structName = type->getStructName();
 			string num = getVariable_or_Value(getElementPtrInst->getOperand(2));
-			id = stoi(num);
-
+			id = stoi(num);//Index of the element, just used as Id with no sense as ID not used at the moment
 			if (boost::iequals(structName, "struct.INPUT_VAL")){	//indicates the INPUT variables
 				ir_ssa->setInputVariable(varName, id, varType);
 			} else if (boost::iequals(structName, "struct.RETURN_VAL")){	//indicates the OUTPUT variables
@@ -566,7 +567,7 @@ void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& wo
 		}
 
 		ir_ssa->setVariable(st, varType);		//Found a variable declaration
-	//	std::cout << "\nVariable name = " << st << " and type = "<<varType << std::endl;
+		//std::cout << "\nVariable name = " << st << " and type = "<<varType << std::endl;
 		st = getVariable_or_Value(fpToUIInst->getOperand(0));
 		my_inst.append(st);
 		st = " )";
@@ -575,32 +576,54 @@ void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& wo
 	//casting from Unsigned integer to double/float-point
 	if (isa<UIToFPInst>(&instruction)) {
 		UIToFPInst *uiToFPInst = dyn_cast<UIToFPInst>(&instruction);
-		std::string st = "(= ", varType;
-		my_inst.append(st);
-		st = uiToFPInst->getName();
-		my_inst.append(st);
-		my_inst.append(" ");
-
-
-		//Todo get the type... Need to verify with the program using siToFp in IR
-		if (uiToFPInst->getDestTy()->isIntegerTy())
-			varType = "Int";
-		else if (uiToFPInst->getDestTy()->isDoubleTy())
+		std::string st, lvar, varType, varTypeSrc;
+		lvar = uiToFPInst->getName();
+		//outs()<<"uiToFPInst->getSrcTy()->ID = "<<uiToFPInst->getSrcTy()->getTypeID()<<"\n";
+		if (uiToFPInst->getSrcTy()->isIntegerTy()) {
+			varTypeSrc = "Int";
+		} else if (uiToFPInst->getSrcTy()->isHalfTy()) {
+			varTypeSrc = "Int";
+		} else {
+			cout << "Unknown DataType" << std::endl;
+			varTypeSrc = "Int";		//Todo:: For now converting to real
+		}
+		if (uiToFPInst->getDestTy()->isDoubleTy()) {
 			varType = "Real";
-		else if (uiToFPInst->getDestTy()->isFloatTy())
+		} else if (uiToFPInst->getDestTy()->isFloatTy()) {
 			varType = "Real";
-		else {
+		} else {
 			cout << "Unknown DataType" << std::endl;
 			varType = "Real";		//Todo:: For now converting to real
 		}
+		ir_ssa->setVariable(lvar, varType);		//Found a variable declaration
+		//std::cout << "\nVariable = " << lvar << " and type = " << varType<< std::endl;
 
-		ir_ssa->setVariable(st, varType);		//Found a variable declaration
-	//	std::cout << "\nVariable name = " << st << " and type = "<<varType << std::endl;
-		st = getVariable_or_Value(uiToFPInst->getOperand(0));
-		my_inst.append(st);
-		st = " )";
-		my_inst.append(st);
+		string rvar = getVariable_or_Value(uiToFPInst->getOperand(0));
+		/*Search op1 in the list of variables if its dataType is Bool then do as below:
+		 (ite rvar (lvar = 1.0) (lvar = 0.0))
+		 Otherwise just do simple assignment from Integer to Real (this supported in SMT2) */
+		if (ir_ssa->findVariable(rvar, varTypeSrc)) {	//if rvar found
+			if (boost::iequals(varTypeSrc, "Bool")) {
+				my_inst.append("( ite ");
+				my_inst.append(rvar);
+				my_inst.append(" ( = ");
+				my_inst.append(lvar);
+				my_inst.append(" 1.0 )");
+				my_inst.append(" ( = ");
+				my_inst.append(lvar);
+				my_inst.append("  0.0 ) )");
+			} else { //rvar not found then, it is just Integer casting to Real
+				std::string st1;
+				my_inst.append("(= ");
+				st1 = uiToFPInst->getName();
+				my_inst.append(st1);
+				my_inst.append(" ");
+				my_inst.append(rvar);
+				my_inst.append(" )");
+			}
+		}
 	}
+//	cout<<"my_inst = " <<my_inst<<"\n";
 
 	if (isa<SelectInst>(&instruction)) {	//Handling only simple i1 type instruction
 		/*

@@ -84,6 +84,8 @@ public:
 	const std::map<std::string, funcDump>& getFunctionDump() const;
 	void setFunctionDump(const std::map<std::string, funcDump>& functionDump);
 
+	//Search the variable var, if found returns True and its dataType is returned as varDataType reference. Otherwise return False.
+	bool findVariable(string var, string &varDataType);
 
 	static unsigned int ssaLineNo;
 };
