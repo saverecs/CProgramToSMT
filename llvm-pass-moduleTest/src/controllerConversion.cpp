@@ -33,16 +33,14 @@ struct TestPass: public ModulePass {
 		std::map<std::string, funcDump> workingList;
 
 		bool runOnModule(Module &M) {
-			errs() << "In module called: " << M.getName() << "!\n";
+			//errs() << "In module called: " << M.getName() << "!\n";
 			std::string funcName, bkName;
 			for (Function &F : M) {	//Found a new Function
 
 				if (isa<Function>(F) && !(F.getName().startswith("llvm."))) {
 					funcName = F.getName();
-					outs() << "\n " << funcName << " : Found a Function !!\n";
-
-					outs() << "Function Name = " << F.getName();
-
+				//	outs() << "\n " << funcName << " : Found a Function !!\n";
+				//	outs() << "Function Name = " << F.getName();
 					std::pair<std::string, std::list<Instruction *> > funcBlockList;
 					std::list<std::pair<std::string, std::list<Instruction *> > > wholeFuncBlocks;
 					for (BasicBlock &B : F) {	//Blocks of the Function
@@ -65,7 +63,7 @@ struct TestPass: public ModulePass {
 					}
 
 					workingList[funcName] = wholeFuncBlocks;//Mapping of the functions
-					outs() << "\nI am out of the Function\n";
+				//	outs() << "\nI am out of the Function\n";
 					//workingList.pu
 				}
 			}

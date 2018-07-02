@@ -14,5 +14,5 @@ typedef struct{
     double  error_i_previous;
 }INPUT_VAL;
 
-RETURN_VAL* controller(INPUT_VAL* iv, RETURN_VAL* rv);
+void* controller(INPUT_VAL* iv, RETURN_VAL* rv);
 

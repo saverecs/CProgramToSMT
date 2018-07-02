@@ -85,7 +85,6 @@ void printSSA_toFile(std::ofstream& outFile, IRssa::ptr& ir_ssa){
  * Main wrapper function that makes recursive calls to function within function calls (if any).
  */
 void convertFunctionToSSA(funcDump& F, IRssa::ptr& ir_ssa) {
-	std::cout<<"Inside converFunction To SSA" << std::endl;
 
 /*
  * Creating Local object for "allStackVariables" for working as a local memory due to recursive call to this function.
@@ -106,14 +105,14 @@ void convertFunctionToSSA(funcDump& F, IRssa::ptr& ir_ssa) {
 
 	workingVariable->setPreviousBlockCondition(false); //Initialization
 
-	std::cout<<"Number of blocks = "<<F.size() << std::endl;
+//	std::cout<<"Number of blocks = "<<F.size() << std::endl;
 	for (funcDump::iterator bit = F.begin(); bit != F.end(); bit++){	//BasicBlock &B : F) {
 
 		std::pair<std::string, std::list<Instruction *> > blockB;
 		//BasicBlock &B = (*bit);
 		blockB = *bit;
 
-		outs() << "\nBasic Block Name: " << blockB.first << "\n";
+//		outs() << "\nBasic Block Name: " << blockB.first << "\n";
 		std::string bkName = "", st = "";
 		bkName = blockB.first;
 		workingVariable->setCurrentBlockName(bkName);
@@ -317,18 +316,18 @@ void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& wo
 			} else if (!(F->getName().startswith("llvm."))) { //indicate that it is a function call
 				string theFunction = F->getName();
 				//Search this in the map and do a recursive: Note:- Take care/make sure variables are local, so that stack logic works
-				std::cout<<"========= Found a call to function: "<<theFunction << "==============" <<std::endl;
+//				std::cout<<"========= Found a call to function: "<<theFunction << "==============" <<std::endl;
 				funcDump nextFunction;
 				std::map<std::string, funcDump> myfuncData = ir_ssa->getFunctionDump(); //Getting the entire functionDump list/map
 				nextFunction = myfuncData[theFunction];
 				if (nextFunction.size()> 1){
-					std::cout<<"Found list of Blocks ("<<nextFunction.size()<<")/Instruction inside the Function!!\n";
-					std::cout<<std::endl;	std::cout<<std::endl;
+//					std::cout<<"Found list of Blocks ("<<nextFunction.size()<<")/Instruction inside the Function!!\n";
+//					std::cout<<std::endl;	std::cout<<std::endl;
 
 					convertFunctionToSSA(nextFunction, ir_ssa);
 
 				}
-				std::cout << std::endl;
+//				std::cout << std::endl;
 			}
 		}
 	}				//End of function_call of llvm.dbg
@@ -441,7 +440,7 @@ void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& wo
 		mystructIndex = getVariable_or_Value(getElementPtrInst->getOperand(2));
 		//outs()<<"Index = " <<mystructIndex;
 		unsigned int ind = stoi(mystructIndex);
-		Type *tt = type->getStructElementType(ind);	//Todo:: Need to verify for Int type
+		Type *tt = type->getStructElementType(ind);	//Todo:: Need to verify for Int type (Look like not working)
 		if (tt->isIntegerTy()) {
 			varType = "Int";
 		//	outs() << varType << "\n";
@@ -552,7 +551,6 @@ void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& wo
 		st = fpToUIInst->getName();
 		my_inst.append(st);
 		my_inst.append(" ");
-
 
 		//Todo get the type... Need to verify with the program using siToFp in IR
 		if (fpToUIInst->getDestTy()->isIntegerTy())
@@ -818,21 +816,18 @@ void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& wo
  * 1) If False branch executes first in sequence, then the condition is negated and open bracket begins.
  * 2) Otherwise no Negation is printed and open bracket begins.
  * 3) If either one of the True/False branch is executed first and the other branch is executed immediately
- *    after it then, it has both if-then-else parts and so use "ite" as smt.
+ *    after it then, it has both if-then-else parts and so use "ite" as smt. Otherwise should be implication "=>" as smt.
  * 4) After the end of one block with the last instruction as conditional br instruction. As soon as one of the
  *    True/False branch is executed and the next consecutive block executed is not the other branch/block of the conditional br instruction
  *    then, the condition does not have the else-part (i.e., it only has the then-part).
  * 5) Note that the printing of the sequences of '(' or ')' brackets are based on these br labels handled properly using some stack like structure.
  *
  */
-		//Todo: handle printing of ite here with appropriate logic of either ite or => (implies)
-
-//		llvm::outs() << "\n=========Branching statement========\n";
 		BranchInst *branchInst = dyn_cast<BranchInst>(&instruction);
 		struct brData brInfo;
 		//llvm::outs() << branchInst->getOperand(0)->getName()<<"\n";
 		//llvm::outs() << branchInst->getNumSuccessors()<<"\n";
-		unsigned int brNumber=branchInst->getNumSuccessors();
+		//unsigned int brNumber=branchInst->getNumSuccessors();
 
 		if (!(branchInst->isConditional())){	//if True has both True and False parts, otherwise on single label
 			workingVariable->setPreviousBlockCondition(false);	//not a conditional br instruction
@@ -1183,14 +1178,13 @@ void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& wo
 
 			workingVariable->setAllCompoundConditions(phiNode1);
 
-
 			string st = "(and ";
 			//			outs()<<"Found stack size="<<getCondStack().size()<<"\n";
 			//			outs()<<"phiNode1.condition="<<phiNode1.conditionExp<<"\n";
-			//Todo:: re-think of NOT expanding/replacing the and/or compound conditions instead just use
+			//Todo:: remove this phiData struct it is NOT required to expand/replace the and/or compound conditions instead just use
 			//condName and ANDing/ORing
-
-			while (!(workingVariable->getCondStack().empty())) {
+			//Todo:: remove this below while-block carefully from And/Or and XOR cases
+			while (!(workingVariable->getCondStack().empty())) {	//Todo:: Should not loop. Only for two operands(phiNode1 and phiNode2)
 				phiNode2 = workingVariable->getTop();
 				if (boost::iequals(phiNode1.blockLabel, phiNode2.blockLabel)) {
 					workingVariable->setAllCompoundConditions(phiNode2);
@@ -1206,8 +1200,8 @@ void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& wo
 			}
 			phiNode1.conditionExp.append(" )");
 			workingVariable->pushTop(phiNode1); //Now replacing the new ANDed expression
-			//			outs()<<"And = "<<phiNode1.conditionExp<<"\n";
-			//			outs()<<"Found stack size="<<getCondStack().size()<<"\n";
+			//	outs()<<"And = "<<phiNode1.conditionExp<<"\n";
+			//	outs()<<"Found stack size="<<getCondStack().size()<<"\n";
 
 			/*unsigned int totalConditions;
 			 totalConditions = binaryOperator->getNumOperands();
@@ -1222,7 +1216,6 @@ void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& wo
 			st = binaryOperator->getName();
 			varType= "Bool";
 			ir_ssa->setVariable(st, varType);	//Found a variable declaration
-
 
 			andConditions.append(" (and ");
 			andConditions.append(binaryOperator->getOperand(0)->getName());
@@ -1388,15 +1381,12 @@ void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& wo
 
 	}	//End of BinaryOperator
 
-	if (isa<CallInst>(instruction)) {
-
-	}
 
 	/*
 	 * Logic as per my understanding (so far): when phi-node is found
 	 *   The working stack data structure is searched for the incoming blockName, if found then get the conditionExp
-	 *   and use as the phi-condtion for assignment. If the stack does not contain the blockName then it indicate that
-	 *   the incoming block has no conditional instruction thus, only a simple assignment is required in this case.
+	 *   and use as the phi-condition for assignment.
+
 	 *   Note here the stack is not deleted (as I guess not need in this algorithm)
 	 */
 	if (isa<PHINode>(instruction)) {
@@ -1434,7 +1424,7 @@ void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& wo
 				my_inst.append(" ");
 				my_inst.append(getVariable_or_Value(phiNode->getOperand(i)));
 				my_inst.append(" ))");
-			}//At the moment I do not see other possible condition
+			} //At the moment I do not see other possible condition
 			/*else{	//Not found indicate just need to have simple assignment
 				my_inst.append(" (= ");
 				my_inst.append(st);
@@ -1443,7 +1433,7 @@ void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& wo
 				my_inst.append(")");
 			}*/
 
-			if (i!=(numberOfIncomingBlock-1))
+			if (i != (numberOfIncomingBlock-1))
 				my_inst.append("\n");
 		}
 	}

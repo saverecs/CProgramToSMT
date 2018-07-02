@@ -6,7 +6,7 @@
 #define UPPER_SAT (SAT)
 #define LOWER_SAT (-SAT)
 
-RETURN_VAL* controller(INPUT_VAL* input, RETURN_VAL* ret_val)
+void* controller(INPUT_VAL* input, RETURN_VAL* ret_val)
 {
   double pid_op = 0.0;
   double KP = 40.0;
@@ -37,5 +37,5 @@ RETURN_VAL* controller(INPUT_VAL* input, RETURN_VAL* ret_val)
   ret_val->voltage = pid_op;
   input->error_i_previous = error_i_prev;
   
-  return ret_val;
+  return (void*)0;
 }
