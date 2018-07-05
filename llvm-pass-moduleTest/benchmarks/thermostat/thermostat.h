@@ -15,5 +15,5 @@ typedef struct{
 
 }INPUT_VAL;
 
-RETURN_VAL* thermostat(INPUT_VAL* iv, RETURN_VAL* rv);
+void* controller(INPUT_VAL* iv, RETURN_VAL* rv);
 

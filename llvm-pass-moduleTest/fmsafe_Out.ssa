@@ -1,175 +1,82 @@
-68 11 3
+29 6 1
 Real tmp
-Real tmp1
-Real tmp2
-Real tmp3
-Real tmp4
-Real tmp5
-Real tmp6
-Real tmp7
-Int conv
-Real tmp8
-Int conv1
-Real tmp9
-Int conv2
-Real tmp10
+Int tmp1
+Int tmp2
+Int tmp3
+Int tmp4
 Bool cmp
-Bool tobool
-Bool tmp11
-Real add
-Bool cmp9
-Bool tobool14
-Bool tmp12
-Bool tobool21
-Real .
-Bool cmp24
-Bool .not251.demorgan
-Bool .not251
-Bool not.or.cond
-Bool narrow
-Bool brmerge.demorgan
-Real rtb_Sum_d.0
-Real mul
-Real mul45
-Real add46
-Real mul49
-Real mul50
-Real mul51
-Real add52252
-Real mul53
-Real mul55
-Real mul56
-Real add57
-Real sub
-Real mul58
-Real mul59
-Real add61
-Real sub64
-Real mul65
-Real mul66
-Real add68
-Real mul69
-Real add70
-Real add78
-Bool cmp79
-Bool cmp84
-Real .add78
-Real Z_AF_Controller_B.sroa.0.0250
-Real Z_AF_Controller_DW.sroa.6.0249
-Real rtb_Switch_n0.0
-Real div
-Real mul92
-Bool cmp93
-Bool cmp98
-Real .mul92
-Real rtb_DataStoreRead.0
-Real conv112
-Real conv115
-Real conv118
-Real conv122
-Real p_engine_speed
-Real p_throttle_angle
-Real p_throttle_flow
-Real p_airbyfuel_meas
-Real p_normal_mode_detect_1
-Real p_pi
-Real p_air_estimate
-Real p_sensor_fail_detect
-Real p_power_mode_detect
-Real p_normal_mode_detect_1_e
-Real p_Sum3
-Real c_commanded_fuel_gps
-Real c_controller_mode
-Real c_airbyfuel_ref
-(= tmp p_engine_speed )
-(= tmp1 p_throttle_angle )
-(= tmp2 p_throttle_flow )
-(= tmp3 p_airbyfuel_meas )
-(= tmp4 p_normal_mode_detect_1 )
-(= tmp5 p_pi )
-(= tmp6 p_air_estimate )
-(= tmp7 p_sensor_fail_detect )
-(= conv tmp7 )
-(= tmp8 p_power_mode_detect )
-(= conv1 tmp8 )
-(= tmp9 p_normal_mode_detect_1_e )
-(= conv2 tmp9 )
-(= tmp10 p_Sum3 )
-(= cmp (<=  tmp3 -1 ) )
-(= tobool (not (=  conv 0 )) )
-(= tmp11 (or cmp tobool ))
-(= add (+ tmp4 0.01 ))
-(= cmp9 (>=  add 10 ) )
-(= tobool14 (not (=  conv2 0 )) )
-(= tmp12 (or cmp9 tobool14 ))
-(= tobool21 (=  conv1 0 ) )
-(ite tobool21 (= . 70 )(= . 50 ) )
-(= cmp24 (>=  tmp1 . ) )
-(= .not251.demorgan (or cmp9 tobool14 ))
-(= .not251 (or ( and ( not .not251.demorgan )  true  ) ( and .not251.demorgan ( not  true  ) ) ) )
-(= not.or.cond (or tmp11 .not251 ))
-(= narrow (or cmp24 not.or.cond ))
-(= brmerge.demorgan (and tmp12 cmp24 ))
-(ite brmerge.demorgan (= rtb_Sum_d.0 12.5 )(= rtb_Sum_d.0 14.7 ) )
-(= mul (* tmp tmp6 ))
-(= mul45 (* mul 0.08979 ))
-(= add46 (+ mul45 -0.366 ))
-(= mul49 (* tmp6 tmp6 ))
-(= mul50 (* tmp mul49 ))
-(= mul51 (* mul50 0.0337 ))
-(= add52252 (- add46 mul51 ))
-(= mul53 (* tmp tmp ))
-(= mul55 (* mul53 tmp6 ))
-(= mul56 (* mul55 0.0001 ))
-(= add57 (+ mul56 add52252 ))
-(= sub (- tmp2 add57 ))
-(= mul58 (* sub 0.41328 ))
-(= mul59 (* mul58 0.01 ))
-(= add61 (+ tmp6 mul59 ))
-(=> (not narrow )
+Bool cmp1
+Bool or.cond81
+Bool cmp2
+Bool cmp5
+Int .
+Int command_to_heater.0
+Bool cmp10
+Bool cmp11
+Bool or.cond
+Int spec.select
+Bool cmp14
+Int inc
+Int chatter_detect.1
+Bool cmp17
+Int spec.select82
+Bool cmp20
+Int inc22
+Int inc24
+Int off_counter.0
+Int on_counter.0
+Bool cond
+Real spec.select83
+Real uVal.0
+Real temperature
+Int chat_detect
+Int previous_cmd_to_heater
+Int on_count
+Int off_count
+Int cmd_to_heater
+Real u
+(= tmp temperature )
+(= tmp1 chat_detect )
+(= tmp2 previous_cmd_to_heater )
+(= tmp3 on_count )
+(= tmp4 off_count )
+(= cmp (>=  tmp 66 ) )
+(= cmp1 (<  tmp 70 ) )
+(= or.cond81 (and cmp cmp1 ))
+(=> (not or.cond81 )
 (and 
-(= sub64 (- tmp3 rtb_Sum_d.0 ))
-(= mul65 (* sub64 0.14 ))
-(= mul66 (* mul65 0.01 ))
-(= add68 (+ tmp5 mul66 ))
-(= mul69 (* sub64 0.04 ))
-(= add70 (+ mul69 add68 ))
-(= add78 (+ add70 1 ))
-(= cmp79 (>  add78 100 ) )
-(=> (not cmp79 )
+(= cmp2 (<  tmp 70 ) )
+(=> cmp2 
 (and 
-(= cmp84 (<  add78 0 ) )
-(ite cmp84 (= .add78 0 )(= .add78 add78 ) )
+(= cmp5 (<  tmp 66 ) )
+(ite cmp5 (= . 1 )(= . tmp2 ) )
  )
  )
  )
  )
-(=> cmp79 (= Z_AF_Controller_B.sroa.0.0250 add70 ))
-(=> (not cmp79 ) (= Z_AF_Controller_B.sroa.0.0250 add70 ))
-(=> narrow (= Z_AF_Controller_B.sroa.0.0250 tmp10 ))
-(=> cmp79 (= Z_AF_Controller_DW.sroa.6.0249 add68 ))
-(=> (not cmp79 ) (= Z_AF_Controller_DW.sroa.6.0249 add68 ))
-(=> narrow (= Z_AF_Controller_DW.sroa.6.0249 tmp5 ))
-(=> cmp79 (= rtb_Switch_n0.0 100 ))
-(=> (not cmp79 ) (= rtb_Switch_n0.0 .add78 ))
-(=> narrow (= rtb_Switch_n0.0 1 ))
-(= div (/ add57 rtb_Sum_d.0 ))
-(= mul92 (* div rtb_Switch_n0.0 ))
-(= cmp93 (>  mul92 1.66 ) )
-(= cmp98 (<  mul92 0.13 ) )
-(ite cmp98 (= .mul92 0.13 )(= .mul92 mul92 ) )
-(ite cmp93 (= rtb_DataStoreRead.0 1.66 )(= rtb_DataStoreRead.0 .mul92 ) )
-(= p_normal_mode_detect_1 add )
-(= p_pi Z_AF_Controller_DW.sroa.6.0249 )
-(= p_air_estimate add61 )
-( ite tmp11 ( = conv112 1.0 ) ( = conv112  0.0 ) )
-(= p_sensor_fail_detect conv112 )
-( ite cmp24 ( = conv115 1.0 ) ( = conv115  0.0 ) )
-(= p_power_mode_detect conv115 )
-( ite tmp12 ( = conv118 1.0 ) ( = conv118  0.0 ) )
-(= p_normal_mode_detect_1_e conv118 )
-(= p_Sum3 Z_AF_Controller_B.sroa.0.0250 )
-(= c_commanded_fuel_gps rtb_DataStoreRead.0 )
-( ite narrow ( = conv122 1.0 ) ( = conv122  0.0 ) )
-(= c_controller_mode conv122 )
-(= c_airbyfuel_ref rtb_Sum_d.0 )
+(=> or.cond81 (= command_to_heater.0 2 ))
+(=> (not cmp2 ) (= command_to_heater.0 0 ))
+(=> cmp2 (= command_to_heater.0 . ))
+(= cmp10 (>  tmp4 4 ) )
+(= cmp11 (>  tmp3 4 ) )
+(= or.cond (or cmp11 cmp10 ))
+(ite or.cond (= spec.select 0 )(= spec.select tmp1 ) )
+(= cmp14 (not (=  command_to_heater.0 tmp2 )) )
+(ite cmp14 (= inc 1) (= inc 0))
+(= chatter_detect.1 (+ spec.select inc ))
+(= cmp17 (>  chatter_detect.1 2 ) )
+(ite cmp17 (= spec.select82 tmp2 )(= spec.select82 command_to_heater.0 ) )
+(= cmp20 (=  spec.select82 0 ) )
+(= inc22 (+ tmp4 1 ))
+(= inc24 (+ tmp3 1 ))
+(ite cmp20 (= off_counter.0 inc22 )(= off_counter.0 0 ) )
+(ite cmp20 (= on_counter.0 0 )(= on_counter.0 inc24 ) )
+(= cond (=  spec.select82 2 ) )
+(ite cond (= spec.select83 70 )(= spec.select83 100 ) )
+(ite cmp20 (= uVal.0 20 )(= uVal.0 spec.select83 ) )
+(= u uVal.0 )
+(= cmd_to_heater spec.select82 )
+(= chat_detect chatter_detect.1 )
+(= previous_cmd_to_heater spec.select82 )
+(= on_count on_counter.0 )
+(= off_count off_counter.0 )

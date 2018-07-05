@@ -54,11 +54,11 @@ struct TestPass: public ModulePass {
 							Instruction *ins;
 							ins = &I;
 							listInst.push_back(ins);
-							// I.dump();
+							(*ins).dump();
 						}
 						funcBlockList.first = bkName;
 						funcBlockList.second = listInst;
-						std::cout << std::endl;
+				//		std::cout << std::endl;
 						wholeFuncBlocks.push_back(funcBlockList);
 					}
 
@@ -67,13 +67,13 @@ struct TestPass: public ModulePass {
 					//workingList.pu
 				}
 			}
-			/*outs()<< "\n =======Reading all the Function is Over!!! ====\n";
+			outs()<< "\n =======Reading all the Function is Over!!! ====\n";
 
 			std::map<std::string, funcDump>::iterator mit;
 			for (mit = workingList.begin(); mit != workingList.end(); mit++) {
 				outs() << "\n ==== Function name: " << (*mit).first;
 				outs() << "\n =====Reading Map!!!============\n";
-			}*/
+			}
 
 
 			ir_ssa->setFunctionDump(workingList);	//required for recursive function call

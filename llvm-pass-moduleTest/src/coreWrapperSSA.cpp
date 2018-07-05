@@ -112,7 +112,7 @@ void convertFunctionToSSA(funcDump& F, IRssa::ptr& ir_ssa) {
 		//BasicBlock &B = (*bit);
 		blockB = *bit;
 
-//		outs() << "\nBasic Block Name: " << blockB.first << "\n";
+		outs() << "\nBasic Block Name: " << blockB.first << "\n";
 		std::string bkName = "", st = "";
 		bkName = blockB.first;
 		workingVariable->setCurrentBlockName(bkName);
@@ -275,7 +275,7 @@ void convertFunctionToSSA(funcDump& F, IRssa::ptr& ir_ssa) {
 		std::list<Instruction *> BInsts;
 		BInsts = blockB.second;
 		for (std::list<Instruction *>::iterator it = BInsts.begin(); it	!= BInsts.end(); it++){ //Instruction &I : B) {
-			// it.dump();
+		//	 (*(*it)).dump();
 			parseInstruction(*(*it), workingVariable, ir_ssa);
 		}
 		workingVariable->setPreviousBlockName(bkName);
@@ -290,7 +290,7 @@ void convertFunctionToSSA(funcDump& F, IRssa::ptr& ir_ssa) {
 void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& workingVariable, IRssa::ptr& ir_ssa) {
 	std::string my_inst = ""; //For every instruction it will start from the empty
 	//simpleVariable < simpleVar;
-	instruction.dump();
+//	instruction.dump();
 
 	//if (DbgDeclareInst *dbg = dyn_cast<DbgDeclareInst>(&instruction)) {
 	if (CallInst *Inst = dyn_cast<CallInst>(&instruction)) {
@@ -311,6 +311,9 @@ void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& wo
 				//std::cout<<"% substr/var = "<<Str.substr(pos+1)<<std::endl;
 				if (pos > 0){ //otherwise a value creation due to optimization
 					ir_ssa->setVariable(Str.substr(pos + 1), "Real"); //Found a variable declaration
+
+
+
 					//std::cout<<"Type = Real and Var = "<<Str.substr(pos + 1)<<std::endl;
 				}
 			} else if (!(F->getName().startswith("llvm."))) { //indicate that it is a function call

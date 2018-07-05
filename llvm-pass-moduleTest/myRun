@@ -1,9 +1,10 @@
 #be inside this project folder llvm-pass-controllerProgram and execute this script
 
 #  /powerTrain/afc.c
-#  mythermo1.c
+#  /thermostat/thermostat.c
+#  /nuclearReactor/nuclearReactor.c
 
-clang -O1 -g    -Xclang -emit-llvm -c benchmarks/powerTrain/afc.c -o benchmarks/test.bc
+clang -O1 -g    -Xclang -emit-llvm -c benchmarks/nuclearReactor/nuclearReactor.c -o benchmarks/test.bc
 
 # -sroa  -sccp -ipsccp -ipconstprop -dce
 #-called-value-propagation    -constprop -correlated-propagation   -internalize  

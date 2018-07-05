@@ -1,7 +1,7 @@
 // Must include controller.h
 #include "thermo1.h"
 
-void controller(INPUT_VAL* input, RETURN_VAL* ret_val) {
+void* controller(INPUT_VAL* input, RETURN_VAL* ret_val) {
 	int chatter_detect;
 	int previous_command_to_heater;
 	int on_counter, off_counter;
@@ -64,5 +64,6 @@ void controller(INPUT_VAL* input, RETURN_VAL* ret_val) {
   input->off_count = off_counter;
 
 //  return ret_val;
+  return (void*)0;
 }
 

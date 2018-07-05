@@ -91,18 +91,29 @@ std::list<std::pair<std::string, std::string> > IRssa::getVariables() {
 	return ssaVariables;
 }
 void IRssa::setVariable(std::string varName, std::string VarType) {
-	bool found = false;
+	bool found_in_ssaVar = false, found_in_inputVar = false, found_in_outputVar = false;
+
 	std::list<std::pair<std::string, std::string> >::iterator it;
 	for (it = ssaVariables.begin(); it != ssaVariables.end(); it++) {
 		if (boost::iequals((*it).first, varName))
-			found = true;
+			found_in_ssaVar = true;
 	}
-	if (!found){ //not a duplicate variable
+	std::list<variable>::iterator itvar;
+	for (itvar = inputVariables.begin(); itvar != inputVariables.end(); itvar++) {
+		if (boost::iequals((*itvar).varName, varName))
+			found_in_inputVar = true;
+	}
+	for (itvar = outputVariables.begin(); itvar != outputVariables.end(); itvar++) {
+		if (boost::iequals((*itvar).varName, varName))
+			found_in_outputVar = true;
+	}
+	if (!found_in_ssaVar && !found_in_inputVar && !found_in_outputVar){ //not a duplicate variable
 		std::pair<std::string, std::string> temp;
 		temp.first = varName;
 		temp.second = VarType;
 		ssaVariables.push_back(temp);
 	}
+
 }
 
 std::list<variable> IRssa::getInputVariables(){
