@@ -67,6 +67,8 @@ public:
 	void modified_DDS_atLine(unsigned int foundAtLineNo, std::string varNameFound, std::string varRHSexpression);
 	void delete_DDS_atLine(unsigned int foundAtLineNo);
 
+	void delete_variable(std::string varName);
+
 	const std::list<std::pair<unsigned int, std::string> >& getAllInsts() const;
 	void setAllInsts(
 			const std::list<std::pair<unsigned int, std::string> >& allInsts);

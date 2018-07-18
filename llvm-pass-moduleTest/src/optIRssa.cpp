@@ -167,10 +167,10 @@ void optIRssa::optimizeProcess(){
 				if (definition_lineNo==lineNo){	//if while-loop reached till definition_lineNo then delete this element from the list of DDS and SSA and STOP
 
 					std::cout << "Found Starting point of definition:" << varNameFound << std::endl;
-					//delete SSA and update DDS using SSA
+					//delete SSA and update DDS using SSA. Also remove this variable from the variable data structure
 					rit = SSA.erase(rit);	//definition in SSA deleted
 					createDefinitionDataStructure(SSA);	//creating DDS using the current modified SSA
-
+					delete_variable(varNameFound);
 					break;
 				}
 
@@ -261,6 +261,29 @@ void optIRssa::delete_DDS_atLine(unsigned int foundAtLineNo){
 			break;
 		}
 	}
+}
+
+void optIRssa::delete_variable(std::string varName){
+	bool foundDeleted = false;
+	//First search the varName in the list intermediateVariables
+	for (std::list<std::pair<std::string, std::string> >::iterator it=intermediateVariables.begin(); it !=intermediateVariables.end();it++){
+		if (boost::iequals(varName,(*it).first)){	//first is varName and second is varType
+			std::cout<<"Deleting Variable varName="<<varName<<std::endl;
+			it = intermediateVariables.erase(it);	//https://stackoverflow.com/questions/596162/can-you-remove-elements-from-a-stdlist-while-iterating-through-it
+			foundDeleted = true;
+			break;
+		}
+	}
+	if (!foundDeleted){
+		//Next Search in InputVariable
+		std::cout<<"Need to Search Variable in InputVariable: varName="<<varName<<std::endl;
+
+	}
+	if (!foundDeleted){
+		//Finally Search in OutputVariable
+		std::cout<<"Need to Search Variable in OutputVariable: varName="<<varName<<std::endl;
+	}
+
 }
 
 bool optIRssa::isDefinitionExist(std::string mytoken, std::string& varRHSexpression, unsigned int& definition_lineNo){

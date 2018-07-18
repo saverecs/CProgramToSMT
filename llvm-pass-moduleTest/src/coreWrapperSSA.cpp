@@ -86,14 +86,14 @@ void printSSA_toFile(std::ofstream& outFile, IRssa::ptr& ir_ssa){
 void print_optSSA_toFile(std::ofstream& outFile, optIRssa::ptr& optir_ssa){
 
 
-/*
+
 	//std::list<std::string> vars = ir_ssa->getVariables();
-	std::list<std::pair<std::string, std::string> > vars = optir_ssa->getVariables();
+	std::list<std::pair<std::string, std::string> > vars = optir_ssa->getIntermediateVariables();
 	std::list<variable> inVars = optir_ssa->getInputVariables(), outVars= optir_ssa->getOutputVariables();
-	*/
+
 
 	std::list<std::pair<unsigned int, std::string> > smt = optir_ssa->getSsa();
-/*
+
 
 	outFile << vars.size() << " " << inVars.size() << " " << outVars.size() << std::endl;
 
@@ -123,7 +123,7 @@ void print_optSSA_toFile(std::ofstream& outFile, optIRssa::ptr& optir_ssa){
 	}
 	//outFile << std::endl;	//Inserting a blank Line
 //		outs() << "\n";
-*/
+
 
 	for (std::list<std::pair<unsigned int, std::string> >::iterator it =
 			smt.begin(); it != smt.end(); it++) {
