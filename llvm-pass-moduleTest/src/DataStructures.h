@@ -58,7 +58,7 @@ struct variable{
 	unsigned int id; //for now assume the order in which it appears in the declaration
 	std::string varName;
 	std::string varType;
-	std::list<std::string> versionNames;//last version at the end of the list.
+	std::list< std::string > versionNames;//last version at the end of the list.
 };
 
 

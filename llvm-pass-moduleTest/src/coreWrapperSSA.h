@@ -19,11 +19,21 @@
 #include <llvm/IR/Instructions.h>
 #include "allStackVariables.h"
 
+
+#include <boost/algorithm/string.hpp> //string comparison
+#include <boost/tokenizer.hpp>
+#include <boost/foreach.hpp>
+#include <boost/config.hpp>
+#include <boost/lexical_cast.hpp>
+
+#include "optIRssa.h"
+
 /*
  * Print SSA onto an output file
  */
 void printSSA_toFile(std::ofstream& outFile, IRssa::ptr& ir_ssa);
 
+void print_optSSA_toFile(std::ofstream& outFile, optIRssa::ptr& optir_ssa);
 
 
 /*

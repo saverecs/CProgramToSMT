@@ -15,6 +15,7 @@ using namespace std;
 
 std::string getVariable_or_Value(Value* op) {
 	std::string st = "";
+
 	if (Constant *c = dyn_cast<Constant>(op)) {
 		if (c->getType()->isIntegerTy()) {
 			int val = c->getUniqueInteger().getSExtValue();
@@ -187,30 +188,6 @@ bool searchPhiCondition(std::list<blockOrdering>& blockSequenceStack,
 	return false;
 }
 
-/*Search is done only on the True or False Label
- * brStack: is a stack containing the conditional instructions with TrueLabel and FalseLabel
- * searchLabel: the label to be searched
- *
- * Outputs:
- * condName: should be returned either condName or (not condName) depending upon True or False incoming path
- * foundIn: returns True if found in the TrueLabel otherwise False when found in the FalseLabel
- * Returns: true if search found otherwise false
- */
-bool searchBrLabel(std::list<struct brData>& brStack, std::string searchLabel, std::string& condName, bool &foundIn){
-	for (std::list<struct brData>::iterator it= brStack.begin();it!=brStack.end();it++){
-		if (boost::iequals((*it).trueLabel, searchLabel)){
-			condName = (*it).brConditionName;//The first instance that it find return the conditionExpression
-			foundIn = true;
-			return true;
-		} else if (boost::iequals((*it).falseLabel, searchLabel)){
-			condName = (*it).brConditionName;//The first instance that it find return the conditionExpression
-			foundIn = false;
-			return true;
-		}
-	}
-	return false;
-}
-
 /*Complete Search is done First on the blockName in which br is found and then searches on the True or False Label
  * brStack: is a stack containing the conditional instructions with TrueLabel and FalseLabel
  * searchLabel: the label to be searched
@@ -237,4 +214,29 @@ bool completeBrLabelSearch(std::list<struct brData>& brStack, std::string search
 	}
 	return false;
 }
+
+/*Search is done only on the True or False Label
+ * brStack: is a stack containing the conditional instructions with TrueLabel and FalseLabel
+ * searchLabel: the label to be searched
+ *
+ * Outputs:
+ * condName: should be returned either condName or (not condName) depending upon True or False incoming path
+ * foundIn: returns True if found in the TrueLabel otherwise False when found in the FalseLabel
+ * Returns: true if search found otherwise false
+ */
+bool searchBrLabel(std::list<struct brData>& brStack, std::string searchLabel, std::string& condName, bool &foundIn){
+	for (std::list<struct brData>::iterator it= brStack.begin();it!=brStack.end();it++){
+		if (boost::iequals((*it).trueLabel, searchLabel)){
+			condName = (*it).brConditionName;//The first instance that it find return the conditionExpression
+			foundIn = true;
+			return true;
+		} else if (boost::iequals((*it).falseLabel, searchLabel)){
+			condName = (*it).brConditionName;//The first instance that it find return the conditionExpression
+			foundIn = false;
+			return true;
+		}
+	}
+	return false;
+}
+
 

@@ -87,6 +87,8 @@ public:
 	//Search the variable var, if found returns True and its dataType is returned as varDataType reference. Otherwise return False.
 	bool findVariable(string var, string &varDataType);
 
+	void printIRSSA();
+
 	static unsigned int ssaLineNo;
 };
 

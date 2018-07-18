@@ -81,6 +81,63 @@ void printSSA_toFile(std::ofstream& outFile, IRssa::ptr& ir_ssa){
 
 
 
+
+
+void print_optSSA_toFile(std::ofstream& outFile, optIRssa::ptr& optir_ssa){
+
+
+/*
+	//std::list<std::string> vars = ir_ssa->getVariables();
+	std::list<std::pair<std::string, std::string> > vars = optir_ssa->getVariables();
+	std::list<variable> inVars = optir_ssa->getInputVariables(), outVars= optir_ssa->getOutputVariables();
+	*/
+
+	std::list<std::pair<unsigned int, std::string> > smt = optir_ssa->getSsa();
+/*
+
+	outFile << vars.size() << " " << inVars.size() << " " << outVars.size() << std::endl;
+
+	//outFile <<"Intermediat SSA Variables" << std::endl;
+	for (std::list<std::pair<std::string, std::string> >::iterator it = vars.begin();
+			it != vars.end(); it++) {
+		outFile << (*it).second << " " <<(*it).first<< std::endl;
+//			std::cout << (*it).second << " " <<(*it).first<< std::endl;
+	}
+	//outFile << std::endl;	//Inserting a blank Line
+//		outs() << "\n";
+
+	//outFile <<"Controller's Input Variables" << std::endl;
+	for (std::list<variable>::iterator it = inVars.begin();
+			it != inVars.end(); it++) {
+		outFile << (*it).varType << " " << (*it).varName << std::endl;
+//			outs() << (*it).varType << " " << (*it).varName << "\n";
+	}
+	//outFile << std::endl;	//Inserting a blank Line
+//		outs() << "\n";
+
+	//outFile <<"Controller's Output Variables" << std::endl;
+	for (std::list<variable>::iterator it = outVars.begin();
+			it != outVars.end(); it++) {
+		outFile << (*it).varType << " " << (*it).varName << std::endl;
+//			outs() << (*it).varType << " " << (*it).varName << "\n";
+	}
+	//outFile << std::endl;	//Inserting a blank Line
+//		outs() << "\n";
+*/
+
+	for (std::list<std::pair<unsigned int, std::string> >::iterator it =
+			smt.begin(); it != smt.end(); it++) {
+		outFile << (*it).second << std::endl;
+//			std::cout << (*it).first << "    " << (*it).second << std::endl;
+	}
+
+	outFile.close();
+}
+
+
+
+
+
 /*
  * Main wrapper function that makes recursive calls to function within function calls (if any).
  */
@@ -112,7 +169,7 @@ void convertFunctionToSSA(funcDump& F, IRssa::ptr& ir_ssa) {
 		//BasicBlock &B = (*bit);
 		blockB = *bit;
 
-		outs() << "\nBasic Block Name: " << blockB.first << "\n";
+//		outs() << "\nBasic Block Name: " << blockB.first << "\n";
 		std::string bkName = "", st = "";
 		bkName = blockB.first;
 		workingVariable->setCurrentBlockName(bkName);
@@ -138,24 +195,29 @@ void convertFunctionToSSA(funcDump& F, IRssa::ptr& ir_ssa) {
 				itStack = br_stack.begin();	//Getting the top of the stack i.e., the previous conditional instruction
 				//std::cout << "Stack False-Label = " << (*itStack).falseLabel<<"!!!!!!!!!!\n";
 				if (boost::iequals(bkName, (*itStack).falseLabel)) {
+					//std::cout << "Block is false-block = " << bkName;
 					//Find the previous smt string which is a "(ite cond", so replace it with "(ite (not cond)" (can use for for error-trapping)
 					//Logic: find out the first space in it and replace it
-					std::list<std::pair<unsigned int, std::string> >::iterator stIt =
-							ir_ssa->getAllInsts().end();
+					std::list<std::pair<unsigned int, std::string> >::iterator stIt = ir_ssa->getAllInsts().end();
 					stIt--; //Last record before end pointer
-					std::string st = (*stIt).second, new_st = "", cond; //	std::cout << "Last string smt = " << (*stIt);
+					std::string st = (*stIt).second, new_st = "", cond;	//Now string is ( ite
+//					std::cout << "Last string smt = " << (*stIt).second;
 					unsigned int ssaNumber = (*stIt).first;
+//					std::cout << " Last SSA Number = " << ssaNumber<<"\n";
+
+					//outs()<<"Printing IR SSA details\n";
+					//ir_ssa->printIRSSA();
+
 					//typedef boost::tokenizer<boost::char_separator <char> > tokenizer;
 					//std::string s = "(ite or.cond5";
 					//tokenizer tok {s};
 					boost::char_separator<char> sep(" "); //, and " " a single space is the separator
-					boost::tokenizer < boost::char_separator<char>
-							> tok(st, sep);
+					boost::tokenizer < boost::char_separator<char> > tok(st, sep);
 					boost::tokenizer<boost::char_separator<char> >::iterator tokPtr;
 					tokPtr = tok.begin();
-					//						BOOST_FOREACH (const string& t, tok) {
-					//							std::cout<<"t = "<<t<<std::endl;
-					//						}
+					//	BOOST_FOREACH (const string& t, tok) {
+					//		std::cout<<"t = "<<t<<std::endl;
+					//	}
 					new_st.append((*tokPtr)); //First token i.e., "(ite"
 					new_st.append(" (not ");
 					tokPtr++;
@@ -165,7 +227,7 @@ void convertFunctionToSSA(funcDump& F, IRssa::ptr& ir_ssa) {
 					if (!(ir_ssa->replaceAllInsts(st, new_st)))	//we can also pass ssaNumber for valid replacement
 						std::cout
 								<< "False Block executed first not operator replacement UnSuccessful!!\n";
-					//std::cout << "string smt after modification= " << new_st << std::endl;
+//					std::cout << "string smt after modification= " << new_st << std::endl;
 					//(*stIt) = new_st;	//replacing with the modified smt string
 
 				}
@@ -210,7 +272,6 @@ void convertFunctionToSSA(funcDump& F, IRssa::ptr& ir_ssa) {
 
 							IRssa::ssaLineNo++;	//static increment
 							ir_ssa->setInst(IRssa::ssaLineNo, "(and ");	//Putting 'and' for compound instructions support for single inst also
-
 							//ir_ssa->setInst("(");
 							break;//Found the first matching position
 						}
@@ -290,7 +351,7 @@ void convertFunctionToSSA(funcDump& F, IRssa::ptr& ir_ssa) {
 void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& workingVariable, IRssa::ptr& ir_ssa) {
 	std::string my_inst = ""; //For every instruction it will start from the empty
 	//simpleVariable < simpleVar;
-//	instruction.dump();
+	instruction.dump();
 
 	//if (DbgDeclareInst *dbg = dyn_cast<DbgDeclareInst>(&instruction)) {
 	if (CallInst *Inst = dyn_cast<CallInst>(&instruction)) {
@@ -312,8 +373,6 @@ void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& wo
 				if (pos > 0){ //otherwise a value creation due to optimization
 					ir_ssa->setVariable(Str.substr(pos + 1), "Real"); //Found a variable declaration
 
-
-
 					//std::cout<<"Type = Real and Var = "<<Str.substr(pos + 1)<<std::endl;
 				}
 			} else if (!(F->getName().startswith("llvm."))) { //indicate that it is a function call
@@ -327,7 +386,7 @@ void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& wo
 //					std::cout<<"Found list of Blocks ("<<nextFunction.size()<<")/Instruction inside the Function!!\n";
 //					std::cout<<std::endl;	std::cout<<std::endl;
 
-					convertFunctionToSSA(nextFunction, ir_ssa);
+					convertFunctionToSSA(nextFunction, ir_ssa);	//Todo:: need to handle ssa variable Name in IR eg FunctionName.vars
 
 				}
 //				std::cout << std::endl;
@@ -505,6 +564,13 @@ void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& wo
 		my_inst.append(st);
 	}
 
+	//Type casting instruction
+	if (isa<FPToSIInst>(instruction)) {
+		std::cout<<"\n\nNeed to work on\n\n\n"<<std::endl;
+	}
+
+
+
 	if (isa<ZExtInst>(instruction)) {
 
 		ZExtInst *zExtInst = dyn_cast<ZExtInst>(&instruction);
@@ -515,11 +581,11 @@ void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& wo
 		convertBoolExp.append(getVariable_or_Value(zExtInst->getOperand(0)));
 		convertBoolExp.append(" (= ");
 		convertBoolExp.append(zExtInst->getName());
-		convertBoolExp.append(" 1)");
+		convertBoolExp.append(" 1 )");
 
 		convertBoolExp.append(" (= ");
 		convertBoolExp.append(zExtInst->getName());
-		convertBoolExp.append(" 0))");
+		convertBoolExp.append(" 0 ))");
 
 		//outs()<<"convertBoolExp = "<<convertBoolExp<<"\n";
 		my_inst.append(convertBoolExp);
@@ -670,61 +736,6 @@ void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& wo
 
 	}
 
-	/*
-	 * Redesign icmp and fcmp instruction, since there can be compound(use of && and ||) conditional statements.
-	 * The "instruction.getOpcodeName()" returns the operation name. It returns 'and' or 'or' after two or more successive icmp/fcmp instructions
-	 * in which case a single 'ite' smt SSA-code is to be generated for the previous two icmp/fcmp instructions.
-	 */
-	/*if (CmpInst *cmpInst = dyn_cast<CmpInst>(&instruction)) { //Compare Instruction: are of type ICmpInst and FCmpInst
-		//std::cout<<"Found Compare instruction\n";
-		struct phiData condition_data;
-		if (ICmpInst *IcmpInst = dyn_cast<ICmpInst>(&instruction)) { //integer operations
-			std::string st = "", cmp_condtion = "";
-			//std::pair<std::string, std::string> condition_data;	//outs()<<"Condition Name="<<IcmpInst->getName()<<"\n";
-			condition_data.blockLabel = getCurrentBlockName();
-			condition_data.condName = IcmpInst->getName();
-			st = "(ite (";	//llvm::outs() << " (ite (> ";
-			my_inst.append(st);
-			cmp_condtion.append("(");
-			cmp_condtion.append(getOperator_Integer(IcmpInst->getPredicate()));
-			//cmp_condtion =getOperator_Integer(IcmpInst->getSignedPredicate());
-			//std::cout<<"Cmp condition = "<<cmp_condtion<<"\n";
-			st = getVariable_or_Value(IcmpInst->getOperand(0));
-			cmp_condtion.append(st);
-			cmp_condtion.append(" ");
-			st = getVariable_or_Value(IcmpInst->getOperand(1));
-			//my_inst.append(IcmpInst->getOperand(1)->getName());
-			cmp_condtion.append(st);
-			cmp_condtion.append(") ");
-			my_inst.append(cmp_condtion);
-			//std::cout<<"Cmp condition = "<<cmp_condtion<<"\n";
-			condition_data.conditionExp = cmp_condtion;
-			pushTop(condition_data);//Storing the cmp_conditional at the top of the stack data-structure
-		} else if (FCmpInst *FcmpInst = dyn_cast<FCmpInst>(&instruction)) {//Conditional statement on Floating operations
-			std::string st = "", cmp_condtion = "";
-			//std::pair<std::string, std::string> condition_data;
-			condition_data.blockLabel= getCurrentBlockName();
-			condition_data.condName = FcmpInst->getName();
-			st = "(ite (";	//llvm::outs() << " (ite (> ";
-			my_inst.append(st);
-			//std::cout << "Condition good" << std::endl;
-			cmp_condtion.append("(");
-			cmp_condtion.append(getOperator_Float(FcmpInst->getPredicate()));
-			//std::cout << "Cmp condition = " << cmp_condtion << "\n";
-			st = getVariable_or_Value(FcmpInst->getOperand(0));
-			cmp_condtion.append(st);
-			cmp_condtion.append(" ");
-			st = getVariable_or_Value(FcmpInst->getOperand(1));
-			//my_inst.append(IcmpInst->getOperand(1)->getName());
-			cmp_condtion.append(st);
-			cmp_condtion.append(") ");
-			my_inst.append(cmp_condtion);
-			//std::cout<<"Cmp condition = "<<cmp_condtion<<"\n";
-			condition_data.conditionExp = cmp_condtion;
-			pushTop(condition_data);//Storing the cmp_conditional at the top of the stack data-structure
-		}
-	}*/
-
 	if (CmpInst *cmpInst = dyn_cast<CmpInst>(&instruction)) { //Compare Instruction: are of type ICmpInst and FCmpInst
 		struct phiData condition_data;
 		std::string st = "", cmp_condtion = "", cmp_str="", varType="Bool", operatorSign;
@@ -841,9 +852,9 @@ void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& wo
 			return;//Does not have both True and False parts
 		} else{
 			workingVariable->setPreviousBlockCondition(true);	//is a conditional br instruction
-//			llvm::outs() << branchInst->getOperand(0)->getName() << "\n";//branch condition Name
-//			llvm::outs() << branchInst->getOperand(1)->getName() << "\n"; // False-label
-//			llvm::outs() << branchInst->getOperand(2)->getName()<<"\n";	//True-label
+//			llvm::outs() <<"cond name = " << branchInst->getOperand(0)->getName() << "\n";//branch condition Name
+//			llvm::outs() <<"False block = " << branchInst->getOperand(1)->getName() << "\n"; // False-label
+//			llvm::outs() <<"True block = " << branchInst->getOperand(2)->getName()<<"\n";	//True-label
 			brInfo.br_inBlock = workingVariable->getCurrentBlockName();
 			brInfo.brConditionName = branchInst->getOperand(0)->getName();
 			brInfo.falseLabel = branchInst->getOperand(1)->getName();
@@ -866,6 +877,7 @@ void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& wo
 			my_inst.append(brInfo.brConditionName);//Condition
 			my_inst.append(" ");
 		//	my_inst.append("(");	//Since it is a conditional instruction, so the start of the True/False block
+//			std::cout<<"conditional br is = "<<my_inst<<std::endl;
 		}
 	}
 
@@ -1182,6 +1194,7 @@ void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& wo
 			workingVariable->setAllCompoundConditions(phiNode1);
 
 			string st = "(and ";
+/*
 			//			outs()<<"Found stack size="<<getCondStack().size()<<"\n";
 			//			outs()<<"phiNode1.condition="<<phiNode1.conditionExp<<"\n";
 			//Todo:: remove this phiData struct it is NOT required to expand/replace the and/or compound conditions instead just use
@@ -1203,6 +1216,8 @@ void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& wo
 			}
 			phiNode1.conditionExp.append(" )");
 			workingVariable->pushTop(phiNode1); //Now replacing the new ANDed expression
+*/
+
 			//	outs()<<"And = "<<phiNode1.conditionExp<<"\n";
 			//	outs()<<"Found stack size="<<getCondStack().size()<<"\n";
 
@@ -1226,6 +1241,7 @@ void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& wo
 			andConditions.append(binaryOperator->getOperand(1)->getName());
 			andConditions.append(" ))");
 			my_inst.append(andConditions);
+//			outs()<<"and condition is "<<my_inst<<"\n";
 			break;
 		}
 		case llvm::Instruction::Or: {	//Handle phi-node for compound conditions
@@ -1416,15 +1432,18 @@ void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& wo
 			string cond = "", incomingBlockLabel;
 			incomingBlockLabel = phiNode->getIncomingBlock(i)->getName();
 			bool found;// = searchBlock(getCondStack(), incomingBlockLabel, cond);//return cond varName
-
+//outs()<<"I m stuck here 1 \n";
 			found = searchPhiCondition(blockSequence, brInfo, currBlockName, incomingBlockLabel, cond); //Correct implementation
-
+//outs()<<"I m NOT stuck here 1 \n";
 			if (found){ //Need to print implication (=> (condition)(assignment/true-part)
 				my_inst.append("(=> ");
 				my_inst.append(cond);
 				my_inst.append(" (= ");
 				my_inst.append(st);
 				my_inst.append(" ");
+				/*if (UndefValue::get(phiNode->getType())){
+
+					}*/
 				my_inst.append(getVariable_or_Value(phiNode->getOperand(i)));
 				my_inst.append(" ))");
 			} //At the moment I do not see other possible condition
@@ -1439,8 +1458,9 @@ void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& wo
 			if (i != (numberOfIncomingBlock-1))
 				my_inst.append("\n");
 		}
+	//	outs()<<"I m NOT stuck AT ALL!!!!!!!! \n";
 	}
-
+//	outs()<<"ALL SSA instruction is " << my_inst<<"\n";
 	if (my_inst.compare("") != 0){
 		ir_ssa->ssaLineNo++;
 		ir_ssa->setInst(ir_ssa->ssaLineNo, my_inst);

@@ -1,16 +1,27 @@
 #be inside this project folder llvm-pass-controllerProgram and execute this script
 
+#  /thermostat/thermo.c
+#	/DCmotor/dcMotor.c
 #  /powerTrain/afc.c
-#  /thermostat/thermostat.c
-#  /nuclearReactor/nuclearReactor.c
+#  /nuclearReactor/nuclear.c		nuclearFirstVer.c   nuclearReactor/nuclearReactor.c
+#	/doubleIntegrator/doubleintg.c
 
-clang -O1 -g    -Xclang -emit-llvm -c benchmarks/nuclearReactor/nuclearReactor.c -o benchmarks/test.bc
+clang -O1 -g   -Xclang -emit-llvm -c benchmarks/DCmotor/dcMotor.c -o benchmarks/test.bc
+
 
 # -sroa  -sccp -ipsccp -ipconstprop -dce
 #-called-value-propagation    -constprop -correlated-propagation   -internalize  
-opt   -O1 -instnamer -mem2reg     -simplifycfg  -loops  -lcssa -loop-simplify -loop-rotate -loop-unroll -unroll-count=5 -unroll-allow-partial       -load src/libTestPass.so -testPass benchmarks/test.bc -view-cfg  -o benchmarks/test
+# -flattencfg
 
 
-##lli benchmarks/test
+#opt   -O1 -instnamer    -mem2reg        -simplifycfg  -loops  -lcssa -loop-simplify -loop-rotate -loop-unroll -unroll-count=15 -unroll-allow-partial       -load src/libTestPass.so -testPass benchmarks/test.bc -view-cfg  -o benchmarks/test
+
+#-aggressive-instcombine this is not working to our usefullness
+
+opt -O1 -instnamer   -mem2reg  -instcombine   -simplifycfg  -loops  -lcssa -loop-simplify -loop-rotate -loop-unroll -unroll-count=15 -unroll-allow-partial      benchmarks/test.bc  -o benchmarks/test1.bc
+
+
+opt -O1    -load src/libTestPass.so -testPass benchmarks/test1.bc   -o benchmarks/test
+
 
 

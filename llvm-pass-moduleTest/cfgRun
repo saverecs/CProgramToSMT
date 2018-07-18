@@ -1,6 +1,6 @@
 
-rm heaterphi.pdf
+#rm heaterphi.pdf
 
 #dot -Tpdf /tmp/cfgcontroller-0efd38.dot -o test3.pdf
-dot -Tpdf /tmp/cfgcontroller-8df0f5.dot -o afc.pdf
+dot -Tpdf /tmp/cfgcontroller-4d2bf5.dot -o nuclear.pdf
 

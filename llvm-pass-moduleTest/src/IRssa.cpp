@@ -174,7 +174,49 @@ bool IRssa::findVariable(string var, string &varDataType) {
 }
 
 
+void IRssa::printIRSSA(){
 
+	//std::list<std::string> vars = ir_ssa->getVariables();
+	std::list<std::pair<std::string, std::string> > vars = getVariables();
+	std::list<variable> inVars = getInputVariables(), outVars= getOutputVariables();
+	std::list<std::pair<unsigned int, std::string> > smt = getAllInsts();
+
+	std::cout << vars.size() << " " << inVars.size() << " " << outVars.size() << std::endl;
+
+	std::cout <<"Intermediat SSA Variables" << std::endl;
+	for (std::list<std::pair<std::string, std::string> >::iterator it = vars.begin();
+			it != vars.end(); it++) {
+		std::cout << (*it).second << " " <<(*it).first<< std::endl;
+//			std::cout << (*it).second << " " <<(*it).first<< std::endl;
+	}
+	std::cout << std::endl;	//Inserting a blank Line
+//		outs() << "\n";
+
+	std::cout <<"Controller's Input Variables" << std::endl;
+	for (std::list<variable>::iterator it = inVars.begin();
+			it != inVars.end(); it++) {
+		std::cout << (*it).varType << " " << (*it).varName << std::endl;
+//			outs() << (*it).varType << " " << (*it).varName << "\n";
+	}
+	std::cout << std::endl;	//Inserting a blank Line
+//		outs() << "\n";
+
+	std::cout <<"Controller's Output Variables" << std::endl;
+	for (std::list<variable>::iterator it = outVars.begin();
+			it != outVars.end(); it++) {
+		std::cout << (*it).varType << " " << (*it).varName << std::endl;
+//			outs() << (*it).varType << " " << (*it).varName << "\n";
+	}
+	std::cout << std::endl;	//Inserting a blank Line
+//		outs() << "\n";
+
+	for (std::list<std::pair<unsigned int, std::string> >::iterator it =
+			smt.begin(); it != smt.end(); it++) {
+		std::cout <<(*it).first <<")    " << (*it).second << std::endl;
+//			std::cout << (*it).first << "    " << (*it).second << std::endl;
+	}
+
+}
 
 
 

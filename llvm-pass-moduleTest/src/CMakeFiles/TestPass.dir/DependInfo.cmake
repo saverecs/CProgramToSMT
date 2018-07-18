@@ -8,6 +8,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/amit/MyData/1ProjectFMSafe/llvm-pass-moduleTest/src/allStackVariables.cpp" "/home/amit/MyData/1ProjectFMSafe/llvm-pass-moduleTest/src/CMakeFiles/TestPass.dir/allStackVariables.cpp.o"
   "/home/amit/MyData/1ProjectFMSafe/llvm-pass-moduleTest/src/controllerConversion.cpp" "/home/amit/MyData/1ProjectFMSafe/llvm-pass-moduleTest/src/CMakeFiles/TestPass.dir/controllerConversion.cpp.o"
   "/home/amit/MyData/1ProjectFMSafe/llvm-pass-moduleTest/src/coreWrapperSSA.cpp" "/home/amit/MyData/1ProjectFMSafe/llvm-pass-moduleTest/src/CMakeFiles/TestPass.dir/coreWrapperSSA.cpp.o"
+  "/home/amit/MyData/1ProjectFMSafe/llvm-pass-moduleTest/src/optIRssa.cpp" "/home/amit/MyData/1ProjectFMSafe/llvm-pass-moduleTest/src/CMakeFiles/TestPass.dir/optIRssa.cpp.o"
   "/home/amit/MyData/1ProjectFMSafe/llvm-pass-moduleTest/src/utilities.cpp" "/home/amit/MyData/1ProjectFMSafe/llvm-pass-moduleTest/src/CMakeFiles/TestPass.dir/utilities.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")

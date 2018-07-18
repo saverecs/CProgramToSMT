@@ -4,6 +4,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/TestPass.dir/IRssa.cpp.o"
   "CMakeFiles/TestPass.dir/utilities.cpp.o"
   "CMakeFiles/TestPass.dir/allStackVariables.cpp.o"
+  "CMakeFiles/TestPass.dir/optIRssa.cpp.o"
   "libTestPass.pdb"
   "libTestPass.so"
 )

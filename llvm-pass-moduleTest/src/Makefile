@@ -233,6 +233,33 @@ coreWrapperSSA.cpp.s:
 	cd /home/amit/MyData/1ProjectFMSafe/llvm-pass-moduleTest && $(MAKE) -f src/CMakeFiles/TestPass.dir/build.make src/CMakeFiles/TestPass.dir/coreWrapperSSA.cpp.s
 .PHONY : coreWrapperSSA.cpp.s
 
+optIRssa.o: optIRssa.cpp.o
+
+.PHONY : optIRssa.o
+
+# target to build an object file
+optIRssa.cpp.o:
+	cd /home/amit/MyData/1ProjectFMSafe/llvm-pass-moduleTest && $(MAKE) -f src/CMakeFiles/TestPass.dir/build.make src/CMakeFiles/TestPass.dir/optIRssa.cpp.o
+.PHONY : optIRssa.cpp.o
+
+optIRssa.i: optIRssa.cpp.i
+
+.PHONY : optIRssa.i
+
+# target to preprocess a source file
+optIRssa.cpp.i:
+	cd /home/amit/MyData/1ProjectFMSafe/llvm-pass-moduleTest && $(MAKE) -f src/CMakeFiles/TestPass.dir/build.make src/CMakeFiles/TestPass.dir/optIRssa.cpp.i
+.PHONY : optIRssa.cpp.i
+
+optIRssa.s: optIRssa.cpp.s
+
+.PHONY : optIRssa.s
+
+# target to generate assembly for a file
+optIRssa.cpp.s:
+	cd /home/amit/MyData/1ProjectFMSafe/llvm-pass-moduleTest && $(MAKE) -f src/CMakeFiles/TestPass.dir/build.make src/CMakeFiles/TestPass.dir/optIRssa.cpp.s
+.PHONY : optIRssa.cpp.s
+
 utilities.o: utilities.cpp.o
 
 .PHONY : utilities.o
@@ -281,6 +308,9 @@ help:
 	@echo "... coreWrapperSSA.o"
 	@echo "... coreWrapperSSA.i"
 	@echo "... coreWrapperSSA.s"
+	@echo "... optIRssa.o"
+	@echo "... optIRssa.i"
+	@echo "... optIRssa.s"
 	@echo "... utilities.o"
 	@echo "... utilities.i"
 	@echo "... utilities.s"

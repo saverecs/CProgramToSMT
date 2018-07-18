@@ -46,7 +46,7 @@ struct TestPass: public ModulePass {
 					for (BasicBlock &B : F) {	//Blocks of the Function
 						if (isa<BasicBlock>(B)) {
 							bkName = B.getName();
-							//outs() << "\n " << bkName << ": Found a BasicBlock !!\n";
+							//outs() << "\n BasicBlock: " << bkName << "\n";
 						}
 						std::list<Instruction *> listInst;
 
@@ -54,7 +54,7 @@ struct TestPass: public ModulePass {
 							Instruction *ins;
 							ins = &I;
 							listInst.push_back(ins);
-							(*ins).dump();
+			//				(*ins).dump();
 						}
 						funcBlockList.first = bkName;
 						funcBlockList.second = listInst;
@@ -67,14 +67,14 @@ struct TestPass: public ModulePass {
 					//workingList.pu
 				}
 			}
-			outs()<< "\n =======Reading all the Function is Over!!! ====\n";
+			/*outs()<< "\n =======Reading all the Function is Over!!! ====\n";
 
 			std::map<std::string, funcDump>::iterator mit;
 			for (mit = workingList.begin(); mit != workingList.end(); mit++) {
 				outs() << "\n ==== Function name: " << (*mit).first;
 				outs() << "\n =====Reading Map!!!============\n";
 			}
-
+*/
 
 			ir_ssa->setFunctionDump(workingList);	//required for recursive function call
 			//outs() << "\nWorking list of Function set\n";
@@ -83,12 +83,37 @@ struct TestPass: public ModulePass {
 			funcData = workingList["controller"];	//Starting from the controller function
 			//std::list<std::pair<std::string, std::list<Instruction *> > >::iterator fit;
 
-			//outs() << "\nBefore Call to Function convert to SSA\n";
+			outs() << "\nBefore Call to Function convert to SSA\n";
 			convertFunctionToSSA(funcData, ir_ssa);
 
-			std::ofstream outFile;
+
+			std::ofstream outFile, outFile2;
 			outFile.open("fmsafe_Out.ssa");
 			printSSA_toFile(outFile, ir_ssa);
+			bool optimization=true;
+			if (optimization){
+				optIRssa::ptr opt_ir_ssa = optIRssa::ptr(new optIRssa());
+				//get a copy of the unoptimized SSA form and its variables
+				opt_ir_ssa->setAllInsts(ir_ssa->getAllInsts());	//get a copy of the unoptimized SSA form
+				opt_ir_ssa->setInputVariables(ir_ssa->getInputVariables());
+				opt_ir_ssa->setIntermediateVariables(ir_ssa->getVariables());
+				opt_ir_ssa->setOutputVariables(ir_ssa->getOutputVariables());
+
+				// @@Debug printing SSA
+				std::list<std::pair<unsigned int, std::string> > smt = ir_ssa->getAllInsts();
+				for (std::list<std::pair<unsigned int, std::string> >::iterator it =
+							smt.begin(); it != smt.end(); it++) {
+					std::cout <<(*it).first <<")    " << (*it).second << std::endl;
+				}
+
+				opt_ir_ssa->optimizeInstCombine();
+
+				outFile2.open("fmsafe_optOut.ssa");
+				print_optSSA_toFile(outFile2, opt_ir_ssa);
+
+
+			}
+
 
 		return false;
 	}
@@ -104,11 +129,9 @@ static void registerTestPass(const PassManagerBuilder &,
 		legacy::PassManagerBase &PM) {
 	PM.add(new TestPass());
 }
-static RegisterStandardPasses RegisterMyPass(
-		PassManagerBuilder::EP_ModuleOptimizerEarly, registerTestPass);
+static RegisterStandardPasses RegisterMyPass(PassManagerBuilder::EP_ModuleOptimizerEarly, registerTestPass);
 
-static RegisterStandardPasses RegisterMyPass0(
-		PassManagerBuilder::EP_EnabledOnOptLevel0, registerTestPass);
+static RegisterStandardPasses RegisterMyPass0(PassManagerBuilder::EP_EnabledOnOptLevel0, registerTestPass);
 
 //Automatically enable the pass.
 //http://adriansampson.net/blog/clangpass.html
