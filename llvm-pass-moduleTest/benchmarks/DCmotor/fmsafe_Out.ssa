@@ -1,0 +1,28 @@
+11 2 1
+Real tmp
+Real tmp1
+Real add
+Real sub
+Real add2
+Real mul3
+Real add5
+Bool cmp
+Bool cmp6
+Real .add5
+Real pid_op.0
+Real angVal
+Real error_i_previous
+Real voltage
+(= tmp angVal )
+(= tmp1 error_i_previous )
+(= add (+ tmp tmp ))
+(= sub (- 1 add ))
+(= add2 (+ tmp1 sub ))
+(= mul3 (* sub 40 ))
+(= add5 (+ mul3 add2 ))
+(= cmp (>  add5 20 ) )
+(= cmp6 (<  add5 -20 ) )
+(ite cmp6 (= .add5 -20 )(= .add5 add5 ) )
+(ite cmp (= pid_op.0 20 )(= pid_op.0 .add5 ) )
+(= voltage pid_op.0 )
+(= error_i_previous add2 )

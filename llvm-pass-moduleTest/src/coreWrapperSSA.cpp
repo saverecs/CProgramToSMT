@@ -81,23 +81,16 @@ void printSSA_toFile(std::ofstream& outFile, IRssa::ptr& ir_ssa){
 
 
 
-
-
 void print_optSSA_toFile(std::ofstream& outFile, optIRssa::ptr& optir_ssa){
-
-
 
 	//std::list<std::string> vars = ir_ssa->getVariables();
 	std::list<std::pair<std::string, std::string> > vars = optir_ssa->getIntermediateVariables();
+	//cout<<"Total in variables = "<<optir_ssa->getInputVariables().size()<<std::endl;
 	std::list<variable> inVars = optir_ssa->getInputVariables(), outVars= optir_ssa->getOutputVariables();
-
-
 	std::list<std::pair<unsigned int, std::string> > smt = optir_ssa->getSsa();
-
-
 	outFile << vars.size() << " " << inVars.size() << " " << outVars.size() << std::endl;
 
-	//outFile <<"Intermediat SSA Variables" << std::endl;
+	//outFile <<"Intermediate SSA Variables" << std::endl;
 	for (std::list<std::pair<std::string, std::string> >::iterator it = vars.begin();
 			it != vars.end(); it++) {
 		outFile << (*it).second << " " <<(*it).first<< std::endl;
@@ -106,7 +99,7 @@ void print_optSSA_toFile(std::ofstream& outFile, optIRssa::ptr& optir_ssa){
 	//outFile << std::endl;	//Inserting a blank Line
 //		outs() << "\n";
 
-	//outFile <<"Controller's Input Variables" << std::endl;
+	//outFile <<"Controller's Input Variables size="<<inVars.size() << std::endl;
 	for (std::list<variable>::iterator it = inVars.begin();
 			it != inVars.end(); it++) {
 		outFile << (*it).varType << " " << (*it).varName << std::endl;
@@ -124,7 +117,6 @@ void print_optSSA_toFile(std::ofstream& outFile, optIRssa::ptr& optir_ssa){
 	//outFile << std::endl;	//Inserting a blank Line
 //		outs() << "\n";
 
-
 	for (std::list<std::pair<unsigned int, std::string> >::iterator it =
 			smt.begin(); it != smt.end(); it++) {
 		outFile << (*it).second << std::endl;
@@ -133,7 +125,6 @@ void print_optSSA_toFile(std::ofstream& outFile, optIRssa::ptr& optir_ssa){
 
 	outFile.close();
 }
-
 
 
 
@@ -351,7 +342,7 @@ void convertFunctionToSSA(funcDump& F, IRssa::ptr& ir_ssa) {
 void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& workingVariable, IRssa::ptr& ir_ssa) {
 	std::string my_inst = ""; //For every instruction it will start from the empty
 	//simpleVariable < simpleVar;
-	instruction.dump();
+//	instruction.dump();
 
 	//if (DbgDeclareInst *dbg = dyn_cast<DbgDeclareInst>(&instruction)) {
 	if (CallInst *Inst = dyn_cast<CallInst>(&instruction)) {
@@ -568,8 +559,6 @@ void parseInstruction(llvm::Instruction &instruction, allStackVariables::ptr& wo
 	if (isa<FPToSIInst>(instruction)) {
 		std::cout<<"\n\nNeed to work on\n\n\n"<<std::endl;
 	}
-
-
 
 	if (isa<ZExtInst>(instruction)) {
 

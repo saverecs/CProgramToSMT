@@ -29,28 +29,26 @@ If the Makefile of the project "llvm-pass-moduleTest" does not exists, then, use
     $ make
     $ cd ..
  
-  If the Makefile is generated then just use the make command
-	 $ cd llvm-pass-moduleTest
-	 $ make
+If the Makefile is generated then just use the make command
+
+	$ cd llvm-pass-moduleTest
+	$ make
 
 
 How to Run:
 
-    $ clang -O1 -g -Xclang -emit-llvm -c benchmarks/someProgram.c -o benchmarks/test.bc
-	 $ opt -O1 -instnamer -mem2reg -simplifycfg -loops -lcssa -loop-simplify -loop-rotate -loop-unroll -unroll-count=3 -unroll-allow-partial -load lib/libTestPass.so -ssa benchmarks/test.bc -view-cfg  -o benchmarks/test
-	 $ lli benchmarks/test		//if we want to execute the binary file 
+	$ clang -O1 -g -Xclang -emit-llvm -c benchmarks/someProgram.c -o benchmarks/test.bc
+	$ opt -O1 -instnamer -mem2reg -simplifycfg -loops -lcssa -loop-simplify -loop-rotate -loop-unroll -unroll-count=3 -unroll-allow-partial -load lib/libTestPass.so -ssa benchmarks/test.bc -view-cfg  -o benchmarks/test
+	$ lli benchmarks/test		//if we want to execute the binary file 
 
-Here the folder benchmarks and lib is assumed to contain the program file "someProgram.c" and the "libTestPass.so" library pass.
-
-The output of this libTestPass.so pass invocation is an output file name "fmsafe_Out.ssa". The format and details contained in the file are described below.
-
+Here the folder benchmarks and lib is assumed to contain the program file "someProgram.c" and the "libTestPass.so" library pass. The output of this libTestPass.so pass invocation is an output file name "fmsafe_Out.ssa". The format and details contained in the file are described below.
 
 
 Format of the Output file:
 
  * The output of execution of "libTestPass.so" pass is dumped into a file so that our FMSafe project can use it for analysis of the input controller program (someProgram.c above).
  * The format of the output file is:
- * First line contain three(3) numbers separated by a space.
+ * 	First line contain three(3) numbers separated by a space.
  * 	The first number is the size of the total intermediate variables used in the entire SSA process.
  * 	The second number is the size of the total input variables present in the controller program which is passed
  * 		as input arguments with the reference structure data type named "INPUT_VAL".
@@ -61,7 +59,7 @@ Format of the Output file:
  * 	The order of occurrence of these variables are "intermediate variables", "input variables" followed
  * 		by the "output variables".
  
- * Following the variables name and their data type, the rest of the lines comprises of the actual SSA statements.
+ * Following the variables name and their data type, the rest of the lines are the actual SSA statements.
 
 
 

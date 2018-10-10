@@ -1,0 +1,131 @@
+39 6 2
+Real tmp
+Real tmp1
+Real tmp2
+Int tmp3
+Int tmp4
+Int tmp5
+Bool cmp
+Bool cmp1
+Bool or.cond
+Bool cmp4
+Bool or.cond51
+Bool cmp7
+Bool or.cond52
+Bool not.or.cond52
+Int spec.select
+Int spec.select102
+Real out_c2.0
+Real out_c1.0
+Int out_r2.0
+Int out_r1.0
+Bool cmp19
+Bool tmp6
+Bool tmp7
+Bool tmp8
+Bool cmp26
+Bool cmp28
+Bool or.cond56
+Bool cmp33
+Bool or.cond57
+Bool cmp38
+Bool or.cond58
+Bool cmp40
+Bool or.cond59
+Int spec.select99
+Int spec.select100
+Int spec.select101
+Int out_r2.1
+Int out_r1.1
+Int out_shut_down.0
+Real temperature
+Real c1
+Real c2
+Int state_r1
+Int state_r2
+Int shutdown
+Int r1
+Int r2
+(= tmp temperature )
+(= tmp1 c1 )
+(= tmp2 c2 )
+(= tmp3 state_r1 )
+(= tmp4 state_r2 )
+(= tmp5 shutdown )
+(= cmp (<=  tmp 510 ) )
+(= cmp1 (=  tmp3 1 ) )
+(= or.cond (and cmp cmp1 ))
+(=> (not or.cond )
+(and 
+(= cmp4 (=  tmp4 1 ) )
+(= or.cond51 (and cmp cmp4 ))
+(=> (not or.cond51 )
+(and 
+(= cmp7 (>=  tmp 510 ) )
+(= or.cond52 (and cmp7 cmp1 ))
+(= not.or.cond52 (or ( and ( not or.cond52 )  true  ) ( and or.cond52 ( not  true  ) ) ) )
+(ite not.or.cond52 (= spec.select 1) (= spec.select 0))
+(ite or.cond52 (= spec.select102 1) (= spec.select102 0))
+ )
+ )
+ )
+ )
+(=> or.cond (= out_c2.0 tmp2 ))
+(=> or.cond51 (= out_c2.0 0 ))
+(=> (not or.cond51 ) (= out_c2.0 tmp2 ))
+(=> or.cond (= out_c1.0 0 ))
+(=> or.cond51 (= out_c1.0 tmp1 ))
+(=> (not or.cond51 ) (= out_c1.0 tmp1 ))
+(=> or.cond (= out_r2.0 0 ))
+(=> or.cond51 (= out_r2.0 0 ))
+(=> (not or.cond51 ) (= out_r2.0 spec.select ))
+(=> or.cond (= out_r1.0 0 ))
+(=> or.cond51 (= out_r1.0 0 ))
+(=> (not or.cond51 ) (= out_r1.0 spec.select102 ))
+(= cmp19 (<=  tmp 550 ) )
+(= tmp6 (or tmp4 tmp3 ))
+(= tmp7 (=  tmp6 0 ) )
+(= tmp8 (and cmp19 tmp7 ))
+(=> (not tmp8 )
+(and 
+(= cmp26 (>=  tmp 550 ) )
+(= cmp28 (>=  tmp1 20 ) )
+(= or.cond56 (and cmp26 cmp28 ))
+(=> (not or.cond56 )
+(and 
+(= cmp33 (>=  tmp2 20 ) )
+(= or.cond57 (and cmp26 cmp33 ))
+(=> (not or.cond57 )
+(and 
+(= cmp38 (<  tmp1 20 ) )
+(= or.cond58 (and cmp26 cmp38 ))
+(= cmp40 (<  tmp2 20 ) )
+(= or.cond59 (and or.cond58 cmp40 ))
+(ite or.cond59 (= spec.select99 1 )(= spec.select99 out_r2.0 ) )
+(ite or.cond59 (= spec.select100 0 )(= spec.select100 out_r1.0 ) )
+(ite or.cond59 (= spec.select101 1 )(= spec.select101 tmp5 ) )
+ )
+ )
+ )
+ )
+ )
+ )
+(=> tmp8 (= out_r2.1 0 ))
+(=> or.cond56 (= out_r2.1 0 ))
+(=> or.cond57 (= out_r2.1 1 ))
+(=> (not or.cond57 ) (= out_r2.1 spec.select99 ))
+(=> tmp8 (= out_r1.1 0 ))
+(=> or.cond56 (= out_r1.1 1 ))
+(=> or.cond57 (= out_r1.1 0 ))
+(=> (not or.cond57 ) (= out_r1.1 spec.select100 ))
+(=> tmp8 (= out_shut_down.0 tmp5 ))
+(=> or.cond56 (= out_shut_down.0 tmp5 ))
+(=> or.cond57 (= out_shut_down.0 tmp5 ))
+(=> (not or.cond57 ) (= out_shut_down.0 spec.select101 ))
+(= r1 out_r1.1 )
+(= r2 out_r2.1 )
+(= c1 out_c1.0 )
+(= c2 out_c2.0 )
+(= state_r1 out_r1.1 )
+(= state_r2 out_r2.1 )
+(= shutdown out_shut_down.0 )

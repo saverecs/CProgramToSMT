@@ -68,6 +68,7 @@ public:
 	void delete_DDS_atLine(unsigned int foundAtLineNo);
 
 	void delete_variable(std::string varName);
+	bool isa_intermediateVariable(std::string varName);
 
 	const std::list<std::pair<unsigned int, std::string> >& getAllInsts() const;
 	void setAllInsts(

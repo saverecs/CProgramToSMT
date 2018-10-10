@@ -7,14 +7,9 @@
 
 #include <optIRssa.h>
 
-
-
-
 void optIRssa::optimizeInstCombine(){
+
 	createDefinitionDataStructure(all_insts);	//DDS created
-
-
-
 	optimizeProcess();
 
 }
@@ -62,30 +57,30 @@ void optIRssa::createDefinitionDataStructure(std::list< std::pair<unsigned int, 
 
 		if (boost::iequals(OpenBracketEqual,"(ite")){
 			tokPtr++;	//getting the conditional variable and do the searchReplace operation
-			std::cout << "Found ite SSA"<<std::endl;
+//			std::cout << "Found ite SSA"<<std::endl;
 		}
 
 		if (boost::iequals(OpenBracketEqual,"(=>")){
-			std::cout << "\t\tPossible Found conversion of phi-node. So multiple line of (=> may follow..."<<std::endl;
-			std::cout << "\t\tNeed to think on further optimization on phi-node...."<<std::endl;
+		//	std::cout << "\t\tPossible Found conversion of phi-node. So multiple line of (=> may follow..."<<std::endl;
+		//	std::cout << "\t\tNeed to think on further optimization on phi-node...."<<std::endl;
 		}
 	}
 	//Delete the last element from DDS because that will be the first processing element in SSA
-		std::list<definitionDS>::iterator last_dds = DDS.end();
-		last_dds--;
-		//std::cout <<"Last DDS variable ="<< (*last_dds).varName<<std::endl;
-		DDS.pop_back();	//remove the last element
+//		std::list<definitionDS>::iterator last_dds = DDS.end();
+//		last_dds--;
+//		//std::cout <<"Last DDS variable ="<< (*last_dds).varName<<std::endl;
+//		DDS.pop_back();	//remove the last element
+
+
 	/*
 		std::list<definitionDS>::iterator last_dds2 = DDS.end();
 		last_dds2--;
 		std::cout <<"Now Last DDS variable is ="<< (*last_dds2).varName<<std::endl;
-	*/
-
 		std::cout<<"Displaying DDS\n";
 		for (std::list<definitionDS>::iterator it = DDS.begin();it!= DDS.end();it++){
-			std::cout<< (*it).varName <<" = "<<(*it).varRHSexpression<<std::endl;
+			std::cout<< (*it).varName <<"="<<(*it).varRHSexpression<<std::endl;
 		}
-
+	*/
 
 
 }
@@ -131,17 +126,19 @@ void optIRssa::optimizeProcess(){
 				if (boost::iequals(mytoken, "(and")) {
 					//We may not require to do anything the last tokPtr++; will do the job
 				}
-
 				//match if this mytoken has definition in DDS. If so get the RHSexpression for replacement
-
+				//Todo: Amit check this again, is not skipping variable
 				flagVarDefinitionFound = isDefinitionExist(mytoken, varRHSexpression,definition_lineNo);
 				if(flagVarDefinitionFound){
-					varNameFound = mytoken;
-					foundAtLineNo = (*rit).first;	//this will help to directly start Replacement Logic directly from this SSA
-					std::cout<<"Found token at SSALineNo="<<foundAtLineNo<<std::endl;
-					std::cout<<"SSA = "<<ssa_str<<std::endl;
-
-					break;	//exit from the while-loop for string search
+					if (isa_intermediateVariable(mytoken)){	//Todo:: done after return from home
+						varNameFound = mytoken;
+						foundAtLineNo = (*rit).first;	//this will help to directly start Replacement Logic directly from this SSA
+//						std::cout<<"Found token("<<mytoken <<") at LineNo="<<foundAtLineNo<< " in SSA ="<<ssa_str<<std::endl;
+	//					std::cout<<"SSA = "<<ssa_str<<std::endl;
+						break;	//exit from the while-loop for string search
+					} else {
+						flagVarDefinitionFound = false;
+					}
 				}
 				starting_token = false;	//as soon as the first token of the ssa_str is traversed
 				tokPtr++;	//THIS does the search for next token
@@ -152,8 +149,9 @@ void optIRssa::optimizeProcess(){
 		}//iterating the next SSA for search variable definition
 
 		//when found apply Replacement Logic using varRHSexpression as replacing expression for the found varName
+		//apply replacement throughout the SSA until self definition found (in which case it is then deleted)
 		if (flagVarDefinitionFound){
-			std::cout<<"===========Found token Apply Replacement Logic!!==========="<<std::endl;
+//			std::cout<<"===========Found token Apply Replacement Logic!!==========="<<std::endl;
 			bool updateDone=false;
 
 			//std::list< std::pair<unsigned int, std::string> >::reverse_iterator rit = SSA.rbegin();
@@ -163,14 +161,17 @@ void optIRssa::optimizeProcess(){
 				rit--;	//decrement or increment from reverse. initially done to reach last element from .end()
 				unsigned int lineNo = (*rit).first;//lineNo on which replacement to be applied, needed to reference DDS.lineNo
 				string ssa_str = (*rit).second;	//string on which replacement to be applied
-				std::cout <<"ssa_str is ="<<ssa_str<< std::endl;
+//				std::cout <<"ssa_str is ="<<ssa_str<< std::endl;
 				if (definition_lineNo==lineNo){	//if while-loop reached till definition_lineNo then delete this element from the list of DDS and SSA and STOP
-
-					std::cout << "Found Starting point of definition:" << varNameFound << std::endl;
-					//delete SSA and update DDS using SSA. Also remove this variable from the variable data structure
-					rit = SSA.erase(rit);	//definition in SSA deleted
-					createDefinitionDataStructure(SSA);	//creating DDS using the current modified SSA
-					delete_variable(varNameFound);
+//				delete only if it is intermediate variable
+					if(isa_intermediateVariable(varNameFound)){	//Todo:: done after return from home
+//						std::cout << "Found Starting point of definition:" << varNameFound << std::endl;
+						//delete SSA and update DDS using SSA. Also remove this variable from the variable data structure
+						rit = SSA.erase(rit);	//definition in SSA deleted
+//						std::cout <<"ssa deleted ="<<ssa_str<< std::endl;
+						createDefinitionDataStructure(SSA);	//creating DDS using the current modified SSA
+						delete_variable(varNameFound);
+					}
 					break;
 				}
 
@@ -184,7 +185,7 @@ void optIRssa::optimizeProcess(){
 					string mytoken;
 					mytoken = (*tokPtr);
 					//std::cout<<"token="<<mytoken<<std::endl;
-					tokenLength =mytoken.length()+1;	//assuming only 1 space
+					tokenLength =mytoken.length()+1;	//assuming only 1 space :: so this length is a rough estimate
 					searchStrLength = searchStrLength + tokenLength;
 					//std::cout<<"searchStrLength="<<searchStrLength<<std::endl;
 					updateDone = false;
@@ -199,10 +200,10 @@ void optIRssa::optimizeProcess(){
 		  When pos is specified, the search only includes characters at or after position pos, ignoring any possible occurrences that include characters before pos.
 		 */
 						searchStrLength = searchStrLength - tokenLength;
-						std::cout<<"Found matching token="<<mytoken<<"  searchStrLength="<<searchStrLength<<std::endl;
+//						std::cout<<"Found matching token="<<mytoken<<"  searchStrLength="<<searchStrLength<<std::endl;
 						unsigned int varPosition, varlength;	//position of the variable in the OldSSA string
 						varPosition = ssa_str.find(mytoken, searchStrLength);
-						std::cout<<"start_pos = " << varPosition <<std::endl;
+//						std::cout<<"start_pos = " << varPosition <<std::endl;
 						varlength = mytoken.length();
 						string modified_ssa = ssa_str;
 						modified_ssa.replace(varPosition,varlength,varRHSexpression);
@@ -214,20 +215,22 @@ void optIRssa::optimizeProcess(){
 						 *	use this updated SSA and create DDS as before
 						 */
 
+
+//						std::cout<<"modified_ssa = " << modified_ssa <<std::endl;
+						(*rit).second = modified_ssa;
+
 						createDefinitionDataStructure(SSA);	//creating DDS using the current modified SSA
 
-						std::cout<<"modified_ssa = " << modified_ssa <<std::endl;
-						(*rit).second = modified_ssa;
 						updateDone = true;
 						searchStrLength =0;	//reset the length
 					}
 					if (!updateDone)	//if not updateDone, then increase tokPtr for next token
 						tokPtr++;			//otherwise search further the ssa_str
 					else
-						break;	//need to search on this same modified ssa_str for more occurance
+						break;	//need to search on this same modified ssa_str for more occurrence
 				}
 
-				if (updateDone){	//need to search on this same modified ssa_str for more occurance
+				if (updateDone){	//need to search on this same modified ssa_str for more occurrence
 					rit++;	//so that we access the same ssa_str
 				}
 
@@ -245,7 +248,7 @@ void optIRssa::modified_DDS_atLine(unsigned int foundAtLineNo, std::string varNa
 			string modified_varRHSexp = (*it).varRHSexpression;
 			boost::replace_all(modified_varRHSexp, varNameFound, varRHSexpression);
 			//replace_all() replaces all occurrence at once// todo:: verify _all and use replace_first if required
-			std::cout<<"modified_varRHSexp = " << modified_varRHSexp <<std::endl;
+//			std::cout<<"modified_varRHSexp = " << modified_varRHSexp <<std::endl;
 			(*it).varRHSexpression = modified_varRHSexp;	//replace the modified DDS
 			break;
 		}
@@ -268,7 +271,7 @@ void optIRssa::delete_variable(std::string varName){
 	//First search the varName in the list intermediateVariables
 	for (std::list<std::pair<std::string, std::string> >::iterator it=intermediateVariables.begin(); it !=intermediateVariables.end();it++){
 		if (boost::iequals(varName,(*it).first)){	//first is varName and second is varType
-			std::cout<<"Deleting Variable varName="<<varName<<std::endl;
+//			std::cout<<"Deleting Variable varName="<<varName<<std::endl;
 			it = intermediateVariables.erase(it);	//https://stackoverflow.com/questions/596162/can-you-remove-elements-from-a-stdlist-while-iterating-through-it
 			foundDeleted = true;
 			break;
@@ -285,6 +288,21 @@ void optIRssa::delete_variable(std::string varName){
 	}
 
 }
+
+
+bool optIRssa::isa_intermediateVariable(std::string varName){
+	bool found = false;
+	//First search the varName in the list intermediateVariables
+	for (std::list<std::pair<std::string, std::string> >::iterator it=intermediateVariables.begin(); it !=intermediateVariables.end();it++){
+		if (boost::iequals(varName,(*it).first)){	//first is varName and second is varType
+//			std::cout<<"Found Variable varName="<<varName<<std::endl;
+			found = true;
+			break;
+		}
+	}
+	return found;
+}
+
 
 bool optIRssa::isDefinitionExist(std::string mytoken, std::string& varRHSexpression, unsigned int& definition_lineNo){
 

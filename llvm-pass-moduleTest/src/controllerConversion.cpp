@@ -20,6 +20,9 @@
 #include "coreWrapperSSA.h"
 #include "IRssa.h"
 
+
+#define MAIN_DEBUG_ON
+
 using namespace llvm;
 
 namespace {
@@ -40,13 +43,19 @@ struct TestPass: public ModulePass {
 				if (isa<Function>(F) && !(F.getName().startswith("llvm."))) {
 					funcName = F.getName();
 				//	outs() << "\n " << funcName << " : Found a Function !!\n";
-				//	outs() << "Function Name = " << F.getName();
+					#ifdef MAIN_DEBUG_ON
+					outs() << "Function Name = " << F.getName() <<"\n";
+					#endif
+
+
 					std::pair<std::string, std::list<Instruction *> > funcBlockList;
 					std::list<std::pair<std::string, std::list<Instruction *> > > wholeFuncBlocks;
 					for (BasicBlock &B : F) {	//Blocks of the Function
 						if (isa<BasicBlock>(B)) {
 							bkName = B.getName();
-							//outs() << "\n BasicBlock: " << bkName << "\n";
+							#ifdef MAIN_DEBUG_ON
+							outs() << "BasicBlock: " << bkName << "\n";
+							#endif
 						}
 						std::list<Instruction *> listInst;
 
@@ -54,7 +63,10 @@ struct TestPass: public ModulePass {
 							Instruction *ins;
 							ins = &I;
 							listInst.push_back(ins);
-			//				(*ins).dump();
+							#ifdef MAIN_DEBUG_ON
+							(*ins).dump();
+							#endif
+
 						}
 						funcBlockList.first = bkName;
 						funcBlockList.second = listInst;
@@ -83,10 +95,10 @@ struct TestPass: public ModulePass {
 			funcData = workingList["controller"];	//Starting from the controller function
 			//std::list<std::pair<std::string, std::list<Instruction *> > >::iterator fit;
 
-			outs() << "\nBefore Call to Function convert to SSA\n";
+			//outs() << "\nBefore Call to Function convert to SSA\n";
 			convertFunctionToSSA(funcData, ir_ssa);
 
-
+// ********* Section for Optimizing SSA *********
 			std::ofstream outFile, outFile2;
 			outFile.open("fmsafe_Out.ssa");
 			printSSA_toFile(outFile, ir_ssa);
@@ -96,25 +108,28 @@ struct TestPass: public ModulePass {
 				//get a copy of the unoptimized SSA form and its variables
 				opt_ir_ssa->setAllInsts(ir_ssa->getAllInsts());	//get a copy of the unoptimized SSA form
 				opt_ir_ssa->setInputVariables(ir_ssa->getInputVariables());
+
+				/*cout<<"Total input variables = "<<ir_ssa->getInputVariables().size()<<std::endl;
+				cout<<"Total input variables = "<<opt_ir_ssa->getInputVariables().size()<<std::endl;*/
 				opt_ir_ssa->setIntermediateVariables(ir_ssa->getVariables());
 				opt_ir_ssa->setOutputVariables(ir_ssa->getOutputVariables());
 
 				// @@Debug printing SSA
-				std::list<std::pair<unsigned int, std::string> > smt = ir_ssa->getAllInsts();
+				/*std::list<std::pair<unsigned int, std::string> > smt = ir_ssa->getAllInsts();
 				for (std::list<std::pair<unsigned int, std::string> >::iterator it =
 							smt.begin(); it != smt.end(); it++) {
 					std::cout <<(*it).first <<")    " << (*it).second << std::endl;
-				}
+				}*/
 
 				opt_ir_ssa->optimizeInstCombine();
+				/*cout<<"After Optimization Step!!!"<<std::endl;
+				cout<<"Total input variables = "<<ir_ssa->getInputVariables().size()<<std::endl;
+				cout<<"Total input variables = "<<opt_ir_ssa->getInputVariables().size()<<std::endl;*/
 
 				outFile2.open("fmsafe_optOut.ssa");
 				print_optSSA_toFile(outFile2, opt_ir_ssa);
 
-
 			}
-
-
 		return false;
 	}
 

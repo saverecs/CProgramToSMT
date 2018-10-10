@@ -1,28 +1,86 @@
-11 2 1
+37 5 3
 Real tmp
 Real tmp1
-Real add
+Real tmp2
+Real tmp3
+Real tmp4
+Real mul
+Real mul18
+Real add19
+Real mul20
+Real mul21
+Real mul22
+Real add23123
+Real mul24
+Real mul25
+Real mul26
+Real add27
 Real sub
-Real add2
-Real mul3
-Real add5
-Bool cmp
-Bool cmp6
-Real .add5
-Real pid_op.0
-Real angVal
-Real error_i_previous
-Real voltage
-(= tmp angVal )
-(= tmp1 error_i_previous )
-(= add (+ tmp tmp ))
-(= sub (- 1 add ))
-(= add2 (+ tmp1 sub ))
-(= mul3 (* sub 40 ))
-(= add5 (+ mul3 add2 ))
-(= cmp (>  add5 20 ) )
-(= cmp6 (<  add5 -20 ) )
-(ite cmp6 (= .add5 -20 )(= .add5 add5 ) )
-(ite cmp (= pid_op.0 20 )(= pid_op.0 .add5 ) )
-(= voltage pid_op.0 )
-(= error_i_previous add2 )
+Real mul28
+Real mul29
+Real add30
+Real sub33
+Real mul34
+Real mul35
+Real add36
+Real mul37
+Real add38
+Real add43
+Bool cmp44
+Bool cmp48
+Real .add43
+Real rtb_Switch_n0.0
+Real div
+Real mul55
+Bool cmp56
+Bool cmp60
+Real .mul55
+Real rtb_DataStoreRead.0
+Real state_p_engine_speed
+Real state_p_throttle_flow
+Real state_p_airbyfuel_meas
+Real state_p_pi
+Real state_p_air_estimate
+Real next_c_commanded_fuel_gps
+Real next_p_air_estimate
+Real next_p_pi
+(= tmp state_p_engine_speed )
+(= tmp1 state_p_throttle_flow )
+(= tmp2 state_p_airbyfuel_meas )
+(= tmp3 state_p_pi )
+(= tmp4 state_p_air_estimate )
+(= mul (* tmp tmp4 ))
+(= mul18 (* mul 0.08979 ))
+(= add19 (+ mul18 -0.366 ))
+(= mul20 (* tmp4 tmp4 ))
+(= mul21 (* tmp mul20 ))
+(= mul22 (* mul21 0.0337 ))
+(= add23123 (- add19 mul22 ))
+(= mul24 (* tmp tmp ))
+(= mul25 (* mul24 tmp4 ))
+(= mul26 (* mul25 0.0001 ))
+(= add27 (+ mul26 add23123 ))
+(= sub (- tmp1 add27 ))
+(= mul28 (* sub 0.41328 ))
+(= mul29 (* mul28 0.01 ))
+(= add30 (+ tmp4 mul29 ))
+(= sub33 (+ tmp2 -14.7 ))
+(= mul34 (* sub33 0.14 ))
+(= mul35 (* mul34 0.01 ))
+(= add36 (+ tmp3 mul35 ))
+(= mul37 (* sub33 0.04 ))
+(= add38 (+ mul37 add36 ))
+(= add43 (+ add38 1 ))
+(= cmp44 (>  add43 100 ) )
+(= cmp48 (<  add43 0 ) )
+(ite cmp48 (= .add43 0 )(= .add43 add43 ) )
+(ite cmp44 (= rtb_Switch_n0.0 100 )(= rtb_Switch_n0.0 .add43 ) )
+(= div (/ add27 14.7 ))
+(= mul55 (* div rtb_Switch_n0.0 ))
+(= cmp56 (>  mul55 1.66 ) )
+(= cmp60 (<  mul55 0.13 ) )
+(ite cmp60 (= .mul55 0.13 )(= .mul55 mul55 ) )
+(ite cmp56 (= rtb_DataStoreRead.0 1.66 )(= rtb_DataStoreRead.0 .mul55 ) )
+(= next_c_commanded_fuel_gps rtb_DataStoreRead.0 )
+(= next_p_air_estimate add30 )
+(= next_p_pi add36 )

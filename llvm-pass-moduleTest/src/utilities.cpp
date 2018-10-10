@@ -80,6 +80,9 @@ std::string getOperator_Integer(llvm::CmpInst::Predicate oper){
 std::string getOperator_Float(llvm::CmpInst::Predicate oper){
 	std::string st;
 	switch (oper) {//Note currently signed (S) and unsigned (U) are handled together
+	case llvm::CmpInst::FCMP_OEQ:
+		st = "= ";	//single space after operation for pre-fix notation
+		break;
 	case llvm::CmpInst::FCMP_OGT:
 		st = "> ";	//single space after operation for pre-fix notation
 		break;

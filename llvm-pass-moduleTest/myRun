@@ -1,27 +1,38 @@
-#be inside this project folder llvm-pass-controllerProgram and execute this script
+# From inside the project folder llvm-pass-controllerProgram execute this script file.
+# This script include two commands:
+#  1) The clang compiler is executed to create a bytecode file named test.bc as shown below.
+#  2) The opt is the llvm command to execute passes to optimized the test.bc file into an optimized bytecode, as shown below the last two opt commands.
+#          Note: The first opt uses the built-in passes and the second is our custom passed named testPass which invoke the corresponding libTestPass.so library.
+#                The goal of this testPass  is to read the llvm IR instruction and convert them into Single Static Assignment (SSA) and finally print these SSA into a file.
+
 
 #  /thermostat/thermo.c
 #	/DCmotor/dcMotor.c
 #  /powerTrain/afc.c
 #  /nuclearReactor/nuclear.c		nuclearFirstVer.c   nuclearReactor/nuclearReactor.c
 #	/doubleIntegrator/doubleintg.c
+# /powerTrainSimple/
+	
 
-clang -O1 -g   -Xclang -emit-llvm -c benchmarks/DCmotor/dcMotor.c -o benchmarks/test.bc
+#clang -O1 -g   -Xclang -emit-llvm -c benchmarks/smallBenchmark/smallBenchmark.c -o benchmarks/test.bc	
+#clang -O1 -g   -Xclang -emit-llvm -c benchmarks/powerTrainSimple/afc_simple.c -o benchmarks/test.bc	
+#clang -O1 -g   -Xclang -emit-llvm -c benchmarks/powerTrain/afc.c -o benchmarks/test.bc		# complex powerTrain controller program 
+#clang -O1 -g   -Xclang -emit-llvm -c benchmarks/Jay/afc_25_08.c -o benchmarks/test.bc	
+
+clang -O1 -g   -Xclang -emit-llvm -c benchmarks/Jay/afc_26_08_mod.c -o benchmarks/test.bc				
+
+#clang -O1 -g   -Xclang -emit-llvm -c benchmarks/thermostat/thermo.c -o benchmarks/test.bc		
+#clang -O1 -g   -Xclang -emit-llvm -c benchmarks/powerTrain/afc.c -o benchmarks/test.bc			
+#clang -O1 -g   -Xclang -emit-llvm -c benchmarks/nuclearReactor/nuclear.c -o benchmarks/test.bc	
+#clang -O1 -g   -Xclang -emit-llvm -c benchmarks/DCmotor/dcMotor.c -o benchmarks/test.bc			
+#clang -O1 -g   -Xclang -emit-llvm -c benchmarks/doubleIntegrator/doubleintg.c -o benchmarks/test.bc
+#clang -O1 -g   -Xclang -emit-llvm -c benchmarks/testing/nonlinear.c -o benchmarks/test.bc			
 
 
-# -sroa  -sccp -ipsccp -ipconstprop -dce
-#-called-value-propagation    -constprop -correlated-propagation   -internalize  
-# -flattencfg
 
 
-#opt   -O1 -instnamer    -mem2reg        -simplifycfg  -loops  -lcssa -loop-simplify -loop-rotate -loop-unroll -unroll-count=15 -unroll-allow-partial       -load src/libTestPass.so -testPass benchmarks/test.bc -view-cfg  -o benchmarks/test
-
-#-aggressive-instcombine this is not working to our usefullness
-
-opt -O1 -instnamer   -mem2reg  -instcombine   -simplifycfg  -loops  -lcssa -loop-simplify -loop-rotate -loop-unroll -unroll-count=15 -unroll-allow-partial      benchmarks/test.bc  -o benchmarks/test1.bc
-
-
-opt -O1    -load src/libTestPass.so -testPass benchmarks/test1.bc   -o benchmarks/test
+opt -O1 -instnamer -mem2reg -instcombine -simplifycfg -loops -lcssa -loop-simplify -loop-rotate -loop-unroll -unroll-count=15 -unroll-allow-partial benchmarks/test.bc  -o benchmarks/test1.bc
+opt -O1    -load src/libTestPass.so -testPass benchmarks/test1.bc  -view-cfg   -o benchmarks/test
 
 
 
