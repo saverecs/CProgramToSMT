@@ -16,6 +16,9 @@ add_library(TestPass MODULE
     allStackVariables.cpp 
     optIRssa.cpp)
 
+include_directories(../../llvm/llvm/include ../../llvm/build/include)
+# ./llvm/build/include/llvm/Config/llvm-config.h
+
 # Use C++11 to compile our pass (i.e., supply -std=c++11).
 target_compile_features(TestPass PRIVATE cxx_range_for cxx_auto_type)
 
