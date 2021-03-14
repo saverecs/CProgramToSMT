@@ -10,3 +10,7 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 !Makefile
+llvmllvm-pass-moduleTest/benchmarks/test
+*.tar.gz
+llvm/
+llvm

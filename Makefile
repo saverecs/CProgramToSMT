@@ -1,15 +1,13 @@
-LLVM7LOC=~/tools/clang_llvm/clang+llvm-7.0.0-x86_64-linux-gnu-ubuntu-16.04/
-# NOTE: You will need to replace LLVM7LOC with the path to your local
-#       download of LLVM 7.0.0, which can be found here:
-#       https://releases.llvm.org/
-
-CL=$(LLVM7LOC)bin/clang
-CXL=$(LLVM7LOC)bin/clang++
-CI=$(LLVM7LOC)include/
-CXI=$(LLVM7LOC)include/
+CL=llvm/build/bin/clang
+CXL=llvm/build/bin/clang++
+CI=llvm/build/include/
+CXI=llvm/build/include/
+OPT=llvm/build/bin/opt
+LLI=llvm/build/bin/lli
+PREF=llvm-pass-moduleTest
 
 clean:
-	git clean -f -X
+	git clean -f -X --exclude="\!llvm"
 	- rm -rf llvm-pass-moduleTest/src/build
 
 build:
@@ -20,4 +18,22 @@ build:
 		CC=$(CL) CXX=$(CXL) C_INCLUDE_PATH=$(CI) CPLUS_INCLUDE_PATH=$(CXI) make
 
 deps:
-	sudo apt-get install -y clang cmake ninja-build
+	sudo apt-get install -y swig libedit-dev
+
+test:
+	$(CL) -O1 -g -Xclang -emit-llvm -c $(PREF)/benchmarks/test.c \
+		                            -o $(PREF)/benchmarks/test.bc
+	$(OPT) -O1 -instnamer \
+		       -mem2reg \
+		       -simplifycfg \
+		       -loops \
+		       -lcssa \
+		       -loop-simplify \
+		       -loop-rotate \
+		       -loop-unroll \
+		       -unroll-count=3 \
+		       -unroll-allow-partial \
+		       -load $(PREF)/src/build/libTestPass.so \
+		       -aa $(PREF)/benchmarks/test.bc \
+		       -view-cfg -o $(PREF)/benchmarks/test
+	$(LLI) benchmarks/test
