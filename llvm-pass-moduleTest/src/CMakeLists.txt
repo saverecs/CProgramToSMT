@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 project(TestPass)
-add_library(TestPass MODULE
+add_library(TestPass SHARED
     # List your source files here.
     controllerConversion.cpp 
     IRssa.h 
