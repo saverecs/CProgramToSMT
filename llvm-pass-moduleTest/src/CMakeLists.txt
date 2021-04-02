@@ -1,8 +1,23 @@
 cmake_minimum_required(VERSION 3.1)
 project(TestPass)
-add_library(TestPass MODULE
+add_library(TestPass SHARED
     # List your source files here.
-    controllerConversion.cpp IRssa.h utilities.h DataStructures.h optIRssa.h optDataStructures.h coreWrapperSSA.h  allStackVariables.h coreWrapperSSA.cpp  IRssa.cpp utilities.cpp allStackVariables.cpp optIRssa.cpp)
+    controllerConversion.cpp 
+    IRssa.h 
+    utilities.h 
+    DataStructures.h 
+    optIRssa.h 
+    optDataStructures.h 
+    coreWrapperSSA.h  
+    allStackVariables.h 
+    coreWrapperSSA.cpp  
+    IRssa.cpp 
+    utilities.cpp 
+    allStackVariables.cpp 
+    optIRssa.cpp)
+
+include_directories(../../llvm/llvm/include ../../llvm/build/include)
+# ./llvm/build/include/llvm/Config/llvm-config.h
 
 # Use C++11 to compile our pass (i.e., supply -std=c++11).
 target_compile_features(TestPass PRIVATE cxx_range_for cxx_auto_type)

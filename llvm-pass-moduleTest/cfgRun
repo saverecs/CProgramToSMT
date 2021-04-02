@@ -1,6 +1,0 @@
-
-#rm heaterphi.pdf
-
-#dot -Tpdf /tmp/cfgcontroller-0efd38.dot -o test3.pdf
-dot -Tpdf /tmp/cfgcontroller-2bc636.dot -o afcTrian.pdf
-
